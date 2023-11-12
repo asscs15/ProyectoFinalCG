@@ -46,8 +46,8 @@ GLFWmonitor *monitors;
 void getResolution(void);
 
 // camera
-Camera camera(glm::vec3(0.0f, 15.0f, 350.0f));//Posicion incial de la camara 
-float MovementSpeed = 50.0f;
+Camera camera(glm::vec3(0.0f, 15.0f, 70.0f));//Posicion incial de la camara 
+float MovementSpeed = 1000.0f;
 float lastX = SCR_WIDTH / 2.0f;
 float lastY = SCR_HEIGHT / 2.0f;
 bool firstMouse = true;
@@ -395,6 +395,7 @@ int main()
 
 	Skybox skybox = Skybox(faces);
 
+
 	// Shader configuration
 	// --------------------
 	skyboxShader.use();
@@ -409,17 +410,16 @@ int main()
 	//-------------------------------------------------------------------------------
 	//Elementos sin animacion
 	//--------------------------------------------------------------------------------
-	
+	//Museo
+	Model museo("resources/Modelos/Museo/edificio.obj");
 	//--------------------------------------------------------------------------------
 	//Modelos con animacion
 	//--------------------------------------------------------------------------------
 	//Caparazon
 
-
-	//Mario
-
 	//Kart
-	Model kartM("resources/Modelos/Mario/kart/Kart.obj");
+	Model kartM("resources/Modelos/Mario/Mario/MarioKart.obj");
+	Model kartL("resources/Modelos/Mario/Luigi/luigi_kart.obj");
 	Model llantasKartM("resources/Modelos/Mario/Kart/LlantaNormal/LlantaNormal.obj");
 	//llantas
 
@@ -591,14 +591,21 @@ int main()
 		staticShader.setMat4("model", model);
 		restaurante.Draw(staticShader);*/
 
-		//Mesas
+		//Mario_Kart
 		// -------------------------------------------------------------------------------------------------------------------------
+		//Mario
 		model = glm::translate(model, glm::vec3(-30.0f, 0.0f, -170.0f));
-		model = glm::scale(model, glm::vec3(1.0f,1.0f,1.0f));
-		model = glm::rotate(model, glm::radians(-90.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+		model = glm::scale(model, glm::vec3(3.0f));
+		//model = glm::rotate(model, glm::radians(-90.0f), glm::vec3(0.0f, 1.0f, 0.0f));
 		staticShader.setMat4("model", model);
 		kartM.Draw(staticShader);
-
+		//Luigi
+		model = glm::translate(model, glm::vec3(-10.0f, 0.0f, -170.0f));
+		model = glm::scale(model, glm::vec3(1.0f));
+		//model = glm::rotate(model, glm::radians(-90.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+		staticShader.setMat4("model", model);
+		kartL.Draw(staticShader);
+		
 
 		//Pasto Diorama
 		// -------------------------------------------------------------------------------------------------------------------------
@@ -607,7 +614,13 @@ int main()
 		staticShader.setMat4("model", model);
 		piso.Draw(staticShader);
 
-		
+		//Estrucutura Museo
+		// ----------------------------------------------------------------------------------------------------------------------
+		model = glm::translate(model, glm::vec3(0.0f, 15.0f, 0.0f));
+		model = glm::scale(model, glm::vec3(0.2f, 5.0f, 0.2f));
+		model = glm::rotate(model, glm::radians(-90.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+		staticShader.setMat4("model", model);
+		museo.Draw(staticShader);
 		// -------------------------------------------------------------------------------------------------------------------------
 		// Termina Escenario
 		// -------------------------------------------------------------------------------------------------------------------------
