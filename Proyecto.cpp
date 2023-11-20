@@ -39,7 +39,7 @@ using namespace irrklang;
 #include "Shader_light.h"
 #include "Camera.h"
 #include "Texture.h"
-//para iluminaciÛn
+//para iluminaci√≥n
 #include "CommonValues.h"
 #include "DirectionalLight.h"
 #include "PointLight.h"
@@ -68,7 +68,7 @@ std::vector<Shader> shaderList;
 
 //Ventanas window
 Window mainWindow;
-//C·maras
+//C√°maras
 Camera camera,cameraIsometrica;
 //Texturas
 Texture brickTexture;
@@ -98,11 +98,13 @@ Model Museo;
 //Mario
 Model Mario;
 Model Luigi;
+
 	//variables animaciones mario
 	int poscm = 0;
 	float cmx=0.0f, cmy=0.0f, cmrot=0.0f;
 	int poscl = 0;
 	float clx = 0.0f, cly = 0.0f, clrot = 0.0f;
+
 
 //Crash
 Model Crash;
@@ -137,7 +139,7 @@ static const char* vShader = "shaders/shader_light.vert";
 // Fragment Shader
 static const char* fShader = "shaders/shader_light.frag";
 
-//c·lculo del promedio de las normales para sombreado de Phong
+//c√°lculo del promedio de las normales para sombreado de Phong
 void calcAverageNormals(unsigned int * indices, unsigned int indiceCount, GLfloat * vertices, unsigned int verticeCount, 
 						unsigned int vLength, unsigned int normalOffset)
 {
@@ -553,6 +555,7 @@ void animate(void){
 		break;
 	}
 
+
 	guardarFrames = fopen("frames.txt", "w");
 	//Movimiento del objeto
 	if (play)
@@ -571,7 +574,7 @@ void animate(void){
 			}
 			else //Next frame interpolations
 			{
-				//printf("entro aquÌ\n");
+				//printf("entro aqu√≠\n");
 				i_curr_steps = 0; //Reset counter
 				//Interpolation
 				interpolation();
@@ -579,7 +582,7 @@ void animate(void){
 		}
 		else
 		{
-			//printf("se quedÛ aqui\n");
+			//printf("se qued√≥ aqui\n");
 			//printf("max steps: %f", i_max_steps);
 			//Draw animation
 			movAvion_x += KeyFrame[playIndex].movAvion_xInc;
@@ -608,10 +611,12 @@ int main() {
 	CreateObjects();
 	CreateShaders();
 
-	/*Se definen las dos c·maras a utilizar*/
+	/*Se definen las dos c√°maras a utilizar*/
 	//camera = Camera(glm::vec3(0.0f, 2.0f, 5.0f), glm::vec3(0.0f, 1.0f, 0.0f), -60.0f, 0.0f, 5.0f, 0.5f);
 	//Camara personaje
+
 	camera = Camera(glm::vec3(-40.0f, 10.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f), 180.0f, 0.0f, 5.0f, 0.5f); //(60.0f, 5.0f, 0.0f)
+
 	cameraIsometrica = Camera(glm::vec3(20.0f, 30.0f, 5.0f), glm::vec3(0.0f, 1.0f, 0.0f), -120.0f, -30.0f, 25.0f, 0.5f);
 
 	brickTexture = Texture("Textures/brick.png");
@@ -656,18 +661,17 @@ int main() {
 	Box_fruit.LoadModel("Models/Crash/caja_fruta.obj");
 	Box_time = Model();
 	Box_time.LoadModel("Models/Crash/caja_tiempo.obj");
+
 	
-
-
-
-//Luz direccional, sÛlo 1 y siempre debe de existir
+//Luz direccional, s√≥lo 1 y siempre debe de existir
 	mainLight = DirectionalLight(5.0f, 5.0f, 5.0f, //Luz del dia
+
 								0.1f, 0.3f,
 								0.0f, 0.0f, -1.0f);
 
 //Contador de luces puntuales
 	unsigned int pointLightCount = 0;
-	//DeclaraciÛn de primer luz puntual
+	//Declaraci√≥n de primer luz puntual
 	pointLights[0] = PointLight(1.0f, 1.0f, 1.0f,
 	//  aInt, dInt
 		5.0f, 2.0f,
@@ -759,11 +763,9 @@ int main() {
 	GLuint uniformColor = 0;
 	glm::mat4 projection = glm::perspective(45.0f, (GLfloat)mainWindow.getBufferWidth() / mainWindow.getBufferHeight(), 0.1f, 300.0f);
 	
-	
-
-
 	movCoche = 0.0f;
 	movOffset  = 1.0f;
+
 	//movZero = 0.0f;
 	avanza = 1;
 	activaCamara = 1;
@@ -967,9 +969,9 @@ int main() {
 		//skyboxNoche.DrawSkybox(camera.calculateViewMatrix(), projection);
 		//skybox.DrawSkybox(camera.calculateViewMatrix(), projection);
 
-/**********************************FALTA ARREGLAR EL CICLO DÕA NOCHE*************************************
+/**********************************FALTA ARREGLAR EL CICLO D√çA NOCHE*************************************
 		if (activarDia = true) {
-			if (contadorDiaNoche > -10.0f) {//PosiciÛn inicial
+			if (contadorDiaNoche > -10.0f) {//Posici√≥n inicial
 				contadorDiaNoche -= contadorDiaNocheOff;//Llega al 10
 				skyboxDia.DrawSkybox(camera.calculateViewMatrix(), projection);
 				activarDia = true;
@@ -979,7 +981,7 @@ int main() {
 			}
 		}
 		else {
-			if (contadorDiaNoche < 10.0f) {//PosiciÛn final
+			if (contadorDiaNoche < 10.0f) {//Posici√≥n final
 				contadorDiaNoche += contadorDiaNocheOff * deltaTime * 2;//Desde el +10 hasta el -10
 				skybox.DrawSkybox(camera.calculateViewMatrix(), projection);
 			}
@@ -995,16 +997,16 @@ int main() {
 		uniformView = shaderList[0].GetViewLocation();
 		uniformEyePosition = shaderList[0].GetEyePositionLocation();
 		uniformColor = shaderList[0].getColorLocation();
-		//informaciÛn en el shader de intensidad especular y brillo
+		//informaci√≥n en el shader de intensidad especular y brillo
 		uniformSpecularIntensity = shaderList[0].GetSpecularIntensityLocation();
 		uniformShininess = shaderList[0].GetShininessLocation();
 
-		//// luz ligada a la c·mara de tipo flash
+		//// luz ligada a la c√°mara de tipo flash
 		//glm::vec3 lowerLight = camera.getCameraPosition();
 		//lowerLight.y -= 0.3f;
 		//spotLights[0].SetFlash(lowerLight, camera.getCameraDirection());
 
-		//informaciÛn al shader de fuentes de iluminaciÛn
+		//informaci√≥n al shader de fuentes de iluminaci√≥n
 		shaderList[0].SetDirectionalLight(&mainLight);
 		shaderList[0].SetPointLights(pointLights, pointLightCount);
 		shaderList[0].SetSpotLights(spotLights, spotLightCount);
@@ -1038,13 +1040,13 @@ int main() {
 		Material_brillante.UseMaterial(uniformSpecularIntensity, uniformShininess);
 		meshList[2]->RenderMesh();
 
-		/***********************AQUÕ SE REALIZA EL CAMBIO DE C¡MARA*******************************/
-		if (mainWindow.getactivaCamara()) { //Al pulsar N, activa c·mara isomÈtrica
+		/***********************AQU√ç SE REALIZA EL CAMBIO DE C√ÅMARA*******************************/
+		if (mainWindow.getactivaCamara()) { //Al pulsar N, activa c√°mara isom√©trica
 			cameraIsometrica.keyControl(mainWindow.getsKeys(), deltaTime * 5.0f);
 			glUniformMatrix4fv(uniformView, 1, GL_FALSE, glm::value_ptr(cameraIsometrica.calculateViewMatrix()));
 			glUniform3f(uniformEyePosition, cameraIsometrica.getCameraPosition().x, cameraIsometrica.getCameraPosition().y, cameraIsometrica.getCameraPosition().z);
 		}
-		else {//Al pulsar M, activa c·mara normal
+		else {//Al pulsar M, activa c√°mara normal
 			//activaCamara = 0;
 			camera.keyControl(mainWindow.getsKeys(), deltaTime * 5);
 			camera.mouseControl(mainWindow.getXChange(), mainWindow.getYChange());
@@ -1056,8 +1058,10 @@ int main() {
 
 		//Museo
 		museo = glm::mat4(1.0);
+
 		museo = glm::translate(museo, glm::vec3(0.0f, 0.2f, 0.0f));
 		museo = glm::scale(museo, glm::vec3(2.0f));
+
 		//Museo = glm::rotate(crash, giroFan * toRadians, glm::vec3(0.0f, -1.0f, 0.0f));
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(museo));
 		Museo.RenderModel();
@@ -1067,6 +1071,7 @@ int main() {
 		mario = glm::translate(mario, glm::vec3(-42.9f+cmy, 2.7f, 2.6f+cmx));
 		mario = glm::scale(mario, glm::vec3(0.03f));
 		mario = glm::rotate(mario, (180+ cmrot) * toRadians, glm::vec3(0.0f, -1.0f, 0.0f));
+
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(mario));
 		Mario.RenderModel();
 
@@ -1075,6 +1080,7 @@ int main() {
 		luigi = glm::translate(luigi, glm::vec3(-43.4f+cly, 2.7f, 2.6f+clx));
 		luigi = glm::scale(luigi, glm::vec3(0.025f));
 		luigi = glm::rotate(luigi, (180+clrot) * toRadians, glm::vec3(0.0f, -1.0f, 0.0f));
+
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(luigi));
 		Luigi.RenderModel();
 		
@@ -1198,7 +1204,7 @@ void inputKeyframes(bool* keys){
 		}
 	}
 	
-	//ImplementaciÛn de teclado para la variable de traslaciÛn en X positivo
+	//Implementaci√≥n de teclado para la variable de traslaci√≥n en X positivo
 	if (keys[GLFW_KEY_1]){
 		if (ciclo < 1){
 			movAvion_x += 1.0f;
@@ -1208,7 +1214,7 @@ void inputKeyframes(bool* keys){
 		}
 		
 	}
-	//ImplementaciÛn de teclado para la variable de traslaciÛn en X negativo
+	//Implementaci√≥n de teclado para la variable de traslaci√≥n en X negativo
 	if (keys[GLFW_KEY_3]) {
 		if (ciclo < 1) {
 			//printf("movAvion_x(-) es: %f\n", movAvion_x);
@@ -1220,7 +1226,7 @@ void inputKeyframes(bool* keys){
 		}
 	}
 
-	//ImplementaciÛn de teclado para la variable de traslaciÛn en Y positivo
+	//Implementaci√≥n de teclado para la variable de traslaci√≥n en Y positivo
 	if (keys[GLFW_KEY_4]) {
 		if (ciclo < 1) {
 			//printf("movAvion_y(+) es: %f\n", movAvion_y);
@@ -1232,7 +1238,7 @@ void inputKeyframes(bool* keys){
 		}
 
 	}
-	//ImplementaciÛn de teclado para la variable de traslaciÛn en Y negativo
+	//Implementaci√≥n de teclado para la variable de traslaci√≥n en Y negativo
 	if (keys[GLFW_KEY_5]) {
 		if (ciclo < 1) {
 			//printf("movAvion_y(-) es: %f\n", movAvion_y);
@@ -1244,7 +1250,7 @@ void inputKeyframes(bool* keys){
 		}
 	}
 
-	//ImplementaciÛn de teclado para la variable GIRO DEL AVI”N
+	//Implementaci√≥n de teclado para la variable GIRO DEL AVI√ìN
 	if (keys[GLFW_KEY_6]) {
 		if (ciclo < 1) {
 			//printf("movAvion_y(-) es: %f\n", movAvion_y);
@@ -1256,7 +1262,7 @@ void inputKeyframes(bool* keys){
 		}
 	}
 
-	//ImplementaciÛn de teclado para la variable GIRO DEL AVI”N
+	//Implementaci√≥n de teclado para la variable GIRO DEL AVI√ìN
 	if (keys[GLFW_KEY_7]) {
 		if (ciclo < 1) {
 			//printf("movAvion_y(-) es: %f\n", movAvion_y);
@@ -1360,7 +1366,7 @@ void inputJoystick() {
 
 
 void musica2D() {
-	//Inicia el mÛdulo con los par·metros por defecto
+	//Inicia el m√≥dulo con los par√°metros por defecto
 	ISoundEngine* engine = createIrrKlangDevice();
 	ISoundEngine* engine2 = createIrrKlangDevice();
 	
