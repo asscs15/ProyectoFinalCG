@@ -39,7 +39,7 @@ using namespace irrklang;
 #include "Shader_light.h"
 #include "Camera.h"
 #include "Texture.h"
-//para iluminaciÛn
+//para iluminaci√≥n
 #include "CommonValues.h"
 #include "DirectionalLight.h"
 #include "PointLight.h"
@@ -68,7 +68,7 @@ std::vector<Shader> shaderList;
 
 //Ventanas window
 Window mainWindow;
-//C·maras
+//C√°maras
 Camera camera,cameraIsometrica;
 //Texturas
 Texture brickTexture;
@@ -117,13 +117,7 @@ Model ItemBlock;
 	int posib = 0;
 	float ibrot = 0.0f, ibz = 0.0f;
 //Crash
-Model Crash;
-Model Coco;
-Model Cortex;
-Model Aku;
-Model Box_power;
-Model Box_fruit;
-Model Box_time;
+
 
 //ModelAnim 
 
@@ -149,7 +143,7 @@ static const char* vShader = "shaders/shader_light.vert";
 // Fragment Shader
 static const char* fShader = "shaders/shader_light.frag";
 
-//c·lculo del promedio de las normales para sombreado de Phong
+//c√°lculo del promedio de las normales para sombreado de Phong
 void calcAverageNormals(unsigned int * indices, unsigned int indiceCount, GLfloat * vertices, unsigned int verticeCount, 
 						unsigned int vLength, unsigned int normalOffset)
 {
@@ -717,7 +711,7 @@ void animate(void){
 			}
 			else //Next frame interpolations
 			{
-				//printf("entro aquÌ\n");
+				//printf("entro aqu√≠\n");
 				i_curr_steps = 0; //Reset counter
 				//Interpolation
 				interpolation();
@@ -725,7 +719,7 @@ void animate(void){
 		}
 		else
 		{
-			//printf("se quedÛ aqui\n");
+			//printf("se qued√≥ aqui\n");
 			//printf("max steps: %f", i_max_steps);
 			//Draw animation
 			movAvion_x += KeyFrame[playIndex].movAvion_xInc;
@@ -754,7 +748,7 @@ int main() {
 	CreateObjects();
 	CreateShaders();
 
-	/*Se definen las dos c·maras a utilizar*/
+	/*Se definen las dos c√°maras a utilizar*/
 	//camera = Camera(glm::vec3(0.0f, 2.0f, 5.0f), glm::vec3(0.0f, 1.0f, 0.0f), -60.0f, 0.0f, 5.0f, 0.5f);
 	//Camara personaje
 	camera = Camera(glm::vec3(-40.0f, 10.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f), 180.0f, 0.0f, 5.0f, 0.5f); //(60.0f, 5.0f, 0.0f)
@@ -793,32 +787,18 @@ int main() {
 	ItemBlock = Model();
 	ItemBlock.LoadModel("Models/Mario/Item_box/box.obj");
 	//Modelos Crash 
-	Crash = Model();
-	Crash.LoadModel("Models/Crash/CrashKart.obj");
-	Coco = Model();
-	Coco.LoadModel("Models/Crash/CocoKart.obj");
-	Cortex = Model();
-	Cortex.LoadModel("Models/Crash/CortexKart.obj");
-	Aku= Model();
-	Aku.LoadModel("Models/Crash/AkuAku.obj");
-	Box_power = Model();
-	Box_power.LoadModel("Models/Crash/caja_poder.obj");
-	Box_fruit = Model();
-	Box_fruit.LoadModel("Models/Crash/caja_fruta.obj");
-	Box_time = Model();
-	Box_time.LoadModel("Models/Crash/caja_tiempo.obj");
 	
 
 
 
-//Luz direccional, sÛlo 1 y siempre debe de existir
+//Luz direccional, s√≥lo 1 y siempre debe de existir
 	mainLight = DirectionalLight(5.0f, 5.0f, 5.0f, //Luz del dia
 								0.1f, 0.3f,
 								0.0f, 0.0f, -1.0f);
 
 //Contador de luces puntuales
 	unsigned int pointLightCount = 0;
-	//DeclaraciÛn de primer luz puntual
+	//Declaraci√≥n de primer luz puntual
 	pointLights[0] = PointLight(1.0f, 1.0f, 1.0f,
 	//  aInt, dInt
 		5.0f, 2.0f,
@@ -1118,9 +1098,9 @@ int main() {
 		//skyboxNoche.DrawSkybox(camera.calculateViewMatrix(), projection);
 		//skybox.DrawSkybox(camera.calculateViewMatrix(), projection);
 
-/**********************************FALTA ARREGLAR EL CICLO DÕA NOCHE*************************************
+/**********************************FALTA ARREGLAR EL CICLO D√çA NOCHE*************************************
 		if (activarDia = true) {
-			if (contadorDiaNoche > -10.0f) {//PosiciÛn inicial
+			if (contadorDiaNoche > -10.0f) {//Posici√≥n inicial
 				contadorDiaNoche -= contadorDiaNocheOff;//Llega al 10
 				skyboxDia.DrawSkybox(camera.calculateViewMatrix(), projection);
 				activarDia = true;
@@ -1130,7 +1110,7 @@ int main() {
 			}
 		}
 		else {
-			if (contadorDiaNoche < 10.0f) {//PosiciÛn final
+			if (contadorDiaNoche < 10.0f) {//Posici√≥n final
 				contadorDiaNoche += contadorDiaNocheOff * deltaTime * 2;//Desde el +10 hasta el -10
 				skybox.DrawSkybox(camera.calculateViewMatrix(), projection);
 			}
@@ -1146,16 +1126,16 @@ int main() {
 		uniformView = shaderList[0].GetViewLocation();
 		uniformEyePosition = shaderList[0].GetEyePositionLocation();
 		uniformColor = shaderList[0].getColorLocation();
-		//informaciÛn en el shader de intensidad especular y brillo
+		//informaci√≥n en el shader de intensidad especular y brillo
 		uniformSpecularIntensity = shaderList[0].GetSpecularIntensityLocation();
 		uniformShininess = shaderList[0].GetShininessLocation();
 
-		//// luz ligada a la c·mara de tipo flash
+		//// luz ligada a la c√°mara de tipo flash
 		//glm::vec3 lowerLight = camera.getCameraPosition();
 		//lowerLight.y -= 0.3f;
 		//spotLights[0].SetFlash(lowerLight, camera.getCameraDirection());
 
-		//informaciÛn al shader de fuentes de iluminaciÛn
+		//informaci√≥n al shader de fuentes de iluminaci√≥n
 		shaderList[0].SetDirectionalLight(&mainLight);
 		shaderList[0].SetPointLights(pointLights, pointLightCount);
 		shaderList[0].SetSpotLights(spotLights, spotLightCount);
@@ -1171,14 +1151,7 @@ int main() {
 		glm::mat4 caparazon2(1.0);
 		glm::mat4 itemblock(1.0);
 		//Crash
-		glm::mat4 model(1.0);
-		glm::mat4 crash(1.0);
-		glm::mat4 coco(1.0);
-		glm::mat4 cortex(1.0);
-		glm::mat4 aku(1.0);
-		glm::mat4 poder(1.0);
-		glm::mat4 fruta(1.0);
-		glm::mat4 tiempo(1.0);
+		
 
 		glm::vec3 color = glm::vec3(1.0f, 1.0f, 1.0f);
 
@@ -1192,13 +1165,13 @@ int main() {
 		Material_brillante.UseMaterial(uniformSpecularIntensity, uniformShininess);
 		meshList[2]->RenderMesh();
 
-		/***********************AQUÕ SE REALIZA EL CAMBIO DE C¡MARA*******************************/
-		if (mainWindow.getactivaCamara()) { //Al pulsar N, activa c·mara isomÈtrica
+		/***********************AQU√ç SE REALIZA EL CAMBIO DE C√ÅMARA*******************************/
+		if (mainWindow.getactivaCamara()) { //Al pulsar N, activa c√°mara isom√©trica
 			cameraIsometrica.keyControl(mainWindow.getsKeys(), deltaTime * 5.0f);
 			glUniformMatrix4fv(uniformView, 1, GL_FALSE, glm::value_ptr(cameraIsometrica.calculateViewMatrix()));
 			glUniform3f(uniformEyePosition, cameraIsometrica.getCameraPosition().x, cameraIsometrica.getCameraPosition().y, cameraIsometrica.getCameraPosition().z);
 		}
-		else {//Al pulsar M, activa c·mara normal
+		else {//Al pulsar M, activa c√°mara normal
 			//activaCamara = 0;
 			camera.keyControl(mainWindow.getsKeys(), deltaTime * 5);
 			camera.mouseControl(mainWindow.getXChange(), mainWindow.getYChange());
@@ -1266,61 +1239,7 @@ int main() {
 
 		//Sala de Crash
 		//----------------------------------------------------------------
-		//Crash con auto
-		crash = glm::mat4(1.0);
-		crash = glm::translate(crash, glm::vec3(-41.0f, 0.0f, -33.0f));
-		crash = glm::scale(crash, glm::vec3(0.1f, 0.1f, 0.1f));
-		crash = glm::rotate(crash, giroFan * toRadians, glm::vec3(0.0f, -1.0f, 0.0f));
-		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(crash));
-		Crash.RenderModel();
-
-		//Coco con auto
-		coco = glm::mat4(1.0);
-		coco = glm::translate(coco, glm::vec3(-41.0f, 0.0f, -38.0f));
-		coco = glm::scale(coco, glm::vec3(0.1f, 0.1f, 0.1f));
-		coco = glm::rotate(coco, giroFan * toRadians, glm::vec3(0.0f, -1.0f, 0.0f));
-		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(coco));
-		Coco.RenderModel();
-
-		//Cortex con auto
-		cortex = glm::mat4(1.0);
-		cortex = glm::translate(cortex, glm::vec3(-41.0f, 0.0f, -28.0f));
-		cortex = glm::scale(cortex, glm::vec3(0.1f, 0.1f, 0.1f));
-		cortex = glm::rotate(cortex, giroFan * toRadians, glm::vec3(0.0f, -1.0f, 0.0f));
-		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(cortex));
-		Cortex.RenderModel();
-
-		//Aku Aku
-		aku = glm::mat4(1.0);
-		aku = glm::translate(aku, glm::vec3(0.0f, 0.0f, 0.0f));
-		aku = glm::scale(aku, glm::vec3(1.0f, 1.0f, 1.0f));
-		aku = glm::rotate(aku, giroFan * toRadians, glm::vec3(0.0f, -1.0f, 0.0f));
-		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(aku));
-		Aku.RenderModel();
-
-		//Caja de poder
-		poder = glm::mat4(1.0);
-		poder = glm::translate(poder, glm::vec3(-41.0f, 7.0f, -38.0f));
-		poder= glm::scale(poder, glm::vec3(2.0f, 2.0f, 2.0f));
-		poder = glm::rotate(poder, giroFan * toRadians, glm::vec3(0.0f, -1.0f, 0.0f));
-		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(poder));
-		Box_power.RenderModel();
-
-		//Caja de fruta
-		fruta = glm::mat4(1.0);
-		fruta = glm::translate(fruta, glm::vec3(-41.0f, 7.0f, -28.0f));
-		fruta = glm::scale(fruta, glm::vec3(2.0f, 2.0f, 2.0f));
-		fruta = glm::rotate(fruta, giroFan * toRadians, glm::vec3(0.0f, -1.0f, 0.0f));
-		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(fruta));
-		Box_fruit.RenderModel();
-
-		//Cajas de tiempo
-		tiempo = glm::mat4(1.0);
-		tiempo = glm::translate(tiempo, glm::vec3(-41.0f, 12.0f, -33.0f));
-		tiempo = glm::scale(tiempo, glm::vec3(2.0f, 2.0f, 2.0f));
-		tiempo = glm::rotate(tiempo, giroFan * toRadians, glm::vec3(0.0f, -1.0f, 0.0f));
-		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(tiempo));
-		Box_time.RenderModel();
+		
 
 
 
@@ -1383,7 +1302,7 @@ void inputKeyframes(bool* keys){
 		}
 	}
 	
-	//ImplementaciÛn de teclado para la variable de traslaciÛn en X positivo
+	//Implementaci√≥n de teclado para la variable de traslaci√≥n en X positivo
 	if (keys[GLFW_KEY_1]){
 		if (ciclo < 1){
 			movAvion_x += 1.0f;
@@ -1393,7 +1312,7 @@ void inputKeyframes(bool* keys){
 		}
 		
 	}
-	//ImplementaciÛn de teclado para la variable de traslaciÛn en X negativo
+	//Implementaci√≥n de teclado para la variable de traslaci√≥n en X negativo
 	if (keys[GLFW_KEY_3]) {
 		if (ciclo < 1) {
 			//printf("movAvion_x(-) es: %f\n", movAvion_x);
@@ -1405,7 +1324,7 @@ void inputKeyframes(bool* keys){
 		}
 	}
 
-	//ImplementaciÛn de teclado para la variable de traslaciÛn en Y positivo
+	//Implementaci√≥n de teclado para la variable de traslaci√≥n en Y positivo
 	if (keys[GLFW_KEY_4]) {
 		if (ciclo < 1) {
 			//printf("movAvion_y(+) es: %f\n", movAvion_y);
@@ -1417,7 +1336,7 @@ void inputKeyframes(bool* keys){
 		}
 
 	}
-	//ImplementaciÛn de teclado para la variable de traslaciÛn en Y negativo
+	//Implementaci√≥n de teclado para la variable de traslaci√≥n en Y negativo
 	if (keys[GLFW_KEY_5]) {
 		if (ciclo < 1) {
 			//printf("movAvion_y(-) es: %f\n", movAvion_y);
@@ -1429,7 +1348,7 @@ void inputKeyframes(bool* keys){
 		}
 	}
 
-	//ImplementaciÛn de teclado para la variable GIRO DEL AVI”N
+	//Implementaci√≥n de teclado para la variable GIRO DEL AVI√ìN
 	if (keys[GLFW_KEY_6]) {
 		if (ciclo < 1) {
 			//printf("movAvion_y(-) es: %f\n", movAvion_y);
@@ -1441,7 +1360,7 @@ void inputKeyframes(bool* keys){
 		}
 	}
 
-	//ImplementaciÛn de teclado para la variable GIRO DEL AVI”N
+	//Implementaci√≥n de teclado para la variable GIRO DEL AVI√ìN
 	if (keys[GLFW_KEY_7]) {
 		if (ciclo < 1) {
 			//printf("movAvion_y(-) es: %f\n", movAvion_y);
@@ -1545,7 +1464,7 @@ void inputJoystick() {
 
 
 void musica2D() {
-	//Inicia el mÛdulo con los par·metros por defecto
+	//Inicia el m√≥dulo con los par√°metros por defecto
 	ISoundEngine* engine = createIrrKlangDevice();
 	ISoundEngine* engine2 = createIrrKlangDevice();
 	
