@@ -39,7 +39,7 @@ using namespace irrklang;
 #include "Shader_light.h"
 #include "Camera.h"
 #include "Texture.h"
-//para iluminaci√≥n
+//para iluminaciÛn
 #include "CommonValues.h"
 #include "DirectionalLight.h"
 #include "PointLight.h"
@@ -68,7 +68,7 @@ std::vector<Shader> shaderList;
 
 //Ventanas window
 Window mainWindow;
-//C√°maras
+//C·maras
 Camera camera,cameraIsometrica;
 //Texturas
 Texture brickTexture;
@@ -98,14 +98,24 @@ Model Museo;
 //Mario
 Model Mario;
 Model Luigi;
-
+Model Caparazon1, Caparazon2;
+Model ItemBlock;
 	//variables animaciones mario
+	//Carro mario
 	int poscm = 0;
 	float cmx=0.0f, cmy=0.0f, cmrot=0.0f;
+	//Carro Luigi
 	int poscl = 0;
 	float clx = 0.0f, cly = 0.0f, clrot = 0.0f;
-
-
+	int posc1 = 100;
+	//Caparazon 1
+	float c1x = 0.0f, c1y = 0.0f,c1z=10.0f, c1rot = 0.0f;
+	//Caparazon 2
+	int posc2 = 100;
+	float c2x = 0.0f, c2y = 0.0f,c2z=10.0f, c2rot = 0.0f;
+	//Item box
+	int posib = 0;
+	float ibrot = 0.0f, ibz = 0.0f;
 //Crash
 Model Crash;
 Model Coco;
@@ -139,7 +149,7 @@ static const char* vShader = "shaders/shader_light.vert";
 // Fragment Shader
 static const char* fShader = "shaders/shader_light.frag";
 
-//c√°lculo del promedio de las normales para sombreado de Phong
+//c·lculo del promedio de las normales para sombreado de Phong
 void calcAverageNormals(unsigned int * indices, unsigned int indiceCount, GLfloat * vertices, unsigned int verticeCount, 
 						unsigned int vLength, unsigned int normalOffset)
 {
@@ -391,106 +401,117 @@ void animate(void){
 	//Ruta carro Mario
 	switch (poscm) {
 	case 0:
-		cmx = 0.0;
-		cmy = 0.0;
-		cmrot = 0.0;
+		cmx = 0.0f;
+		cmy = 0.0f;
+		cmrot = 0.0f;
 		poscm = 1;
 		break;
 	case 1:
 		if (cmx >= -2) {
-			cmx -= 0.01;
+			cmx -= 0.01f;
 		}
 		else
 			poscm = 2;
 		break;
 	case 2:
 		if (cmrot <= 80) {
-			cmx -= 0.01;
-			cmy += 0.005;
-			cmrot += 0.6;
-		}else
+			cmx -= 0.01f;
+			cmy += 0.005f;
+			cmrot += 0.6f;
+		}
+		else
 			poscm = 3;
 		break;
-	
+
 	case 3:
 		if (cmy <= 1.3) {
-			cmy += 0.02;
+			cmy += 0.02f;
 		}
 		else
 			poscm = 4;
 		break;
 	case 4:
 		if (cmrot >= 0) {
-			cmx -= 0.007;
-			cmy += 0.01;
-			cmrot -= 0.7;
+			cmx -= 0.007f;
+			cmy += 0.01f;
+			cmrot -= 0.7f;
 		}
 		else
 			poscm = 5;
 		break;
 	case 5:
 		if (cmx >= -6) {
-			cmx -= 0.02;
+			cmx -= 0.02f;
+			if (cmx <= -5.0f) {
+				c1z = 0.0f;
+			}
+
 		}
-		else
+		else {
+
 			poscm = 6;
+		}
+
 		break;
 	case 6:
 		if (cmrot >= -90) {
-			cmx -= 0.007;
-			cmy -= 0.01;
-			cmrot -= 0.7;
+			cmx -= 0.007f;
+			cmy -= 0.01f;
+			cmrot -= 0.7f;
 		}
 		else
 			poscm = 7;
 		break;
 	case 7:
 		if (cmrot <= 0) {
-			cmx -= 0.007;
-			cmy -= 0.01;
-			cmrot += 0.7;
+			cmx -= 0.007f;
+			cmy -= 0.01f;
+			cmrot += 0.7f;
+			if (cmy <= 0.1) {
+				cmrot += 4.0f;
+			}
 		}
 		else
 			poscm = 8;
 		break;
 	case 8:
 		if (cmx >= -8) {
-			cmx -= 0.02;
+			cmx -= 0.02f;
+			cmrot += 4.0f;
 		}
 		else
-			poscm = 9;
-		break;
-	case 9:
-		if (cmrot <= 90) {
-			cmx -= 0.01;
-			cmy += 0.01;
-			cmrot += 0.7;
-		}
-		else
-			poscm = 0;
-		break;
-	}
+		{
+			cmrot += 4.0f;
+			if (poscl == 8) {
+				poscm = 0;
+				printf("posicion final: x= %f y=%f", clx, cly);
+			}
 
+		}
+		break;
+
+	}
+	
 	//Ruta carro Luigi
 	switch (poscl) {
 	case 0:
-		clx = 0.0;
-		cly = 0.0;
-		clrot = 0.0;
+		clx = 0.0f;
+		cly = 0.0f;
+		clrot = 0.0f;
 		poscl = 1;
 		break;
 	case 1:
 		if (clx >= -2) {
-			clx -= 0.01;
+			clx -= 0.01f;
 		}
 		else
 			poscl = 2;
 		break;
 	case 2:
 		if (clrot <= 80) {
-			clx -= 0.01;
-			cly += 0.005;
-			clrot += 0.6;
+			clx -= 0.01f;
+			cly += 0.005f;
+			clrot += 0.6f;
 		}
 		else
 			poscl = 3;
@@ -498,62 +519,184 @@ void animate(void){
 
 	case 3:
 		if (cly <= 1.3) {
-			cly += 0.02;
+			cly += 0.02f;
 		}
 		else
 			poscl = 4;
 		break;
 	case 4:
 		if (clrot >= 0) {
-			clx -= 0.007;
-			cly += 0.01;
-			clrot -= 0.7;
+			clx -= 0.007f;
+			cly += 0.01f;
+			clrot -= 0.7f;
 		}
 		else
 			poscl = 5;
 		break;
 	case 5:
 		if (clx >= -6) {
-			clx -= 0.02;
+			clx -= 0.02f;
+			if (clx >= -6) {
+				clx -= 0.02f;
+				if (clx <= -5.0f) {
+					c2z = 0.0f;
+					posc1 = posc2 = 0;
+				}
+
+			}
 		}
-		else
+		else {
 			poscl = 6;
+		}
+			
 		break;
 	case 6:
 		if (clrot >= -90) {
-			clx -= 0.007;
-			cly -= 0.01;
-			clrot -= 0.7;
+			clx -= 0.007f;
+			cly -= 0.01f;
+			clrot -= 0.7f;
 		}
 		else
 			poscl = 7;
 		break;
 	case 7:
 		if (clrot <= 0) {
-			clx -= 0.007;
-			cly -= 0.01;
-			clrot += 0.7;
+			clx -= 0.007f;
+			cly -= 0.01f;
+			clrot += 0.7f;
+			if (cly <= 0.4) {
+				clrot += 4.0f;
+			}
 		}
 		else
 			poscl = 8;
 		break;
 	case 8:
-		if (clx >= -8) {
-			clx -= 0.02;
+		if (clx >= -8.0) {
+			clx -= 0.02f;
+			clrot += 4.0f;
 		}
-		else
-			poscl = 9;
+		else {
+			clrot += 4.0f;
+			if (poscm == 0) {
+				poscl = 0;
+				printf("posicion final: x= %f y=%f", clx, cly);
+			}
+			
+		}
 		break;
-	case 9:
-		if (clrot <= 90) {
-			clx -= 0.01;
-			cly += 0.01;
-			clrot += 0.7;
+
+	}
+	//animacion de caprazon 1
+	if (c1rot <= 360.0f) {
+		c1rot = c2rot += 4.0f;
+	}
+	else {
+		c1rot = c2rot = 0.0f;
+	}
+	switch (posc1) {
+	case 0:
+		if (c1x >= -3.0) {
+			c1x -= 0.04;
+			c1y -= 0.002;
 		}
 		else
-			poscl = 0;
+			posc1 = 1;
+		break;
+	case 1:
+		if (c1x <= -0.45) {
+			c1x += 0.04;
+			c1y -= 0.02;
+		}
+		else
+			posc1 = 2;
+		break;
+	case 2:
+		if (c1x >= -2.5) {
+			c1x -= 0.02;
+			c1y -= 0.012;
+
+		}
+		else
+			posc1 = 3;
+		break;
+	case 3:
+		c1z = -10.0f;
+		c1x = 0.0f;
+		c1y = 0.0f;
+		posc1 = 100;
+		break;
+
+	}
+	//animacion caparazon 2
+	switch (posc2) {
+	case 0:
+		if (c2x >= -3.0) {
+			c2x -= 0.04;
+			c2y -= 0.007;
+		}
+		else
+			posc2 = 1;
+		break;
+	case 1:
+		if (c2x <= -0.45) {
+			c2x += 0.04;
+			c2y -= 0.038;
+		}
+		else
+			posc2 = 2;
+		break;
+	case 2:
+		if (c2x >= -0.8) {
+			c2x -= 0.02;
+			c2y -= 0.02;
+
+		}
+		else
+			posc2 = 3;
+		break;
+	case 3:
+		if (c2x >= -2.5) {
+			c2x -= 0.015;
+			c2y += 0.015;
+		}
+		else
+			posc2 = 4;
+		break;
+	case 4:
+		c2z = -10.0f;
+		c2x = 0.0f;
+		c2y = 0.0f;
+		posc2 = 100;
+		break;
+
+	}
+		
+	
+	//rotacion item box
+	if (ibrot <= 360.0f) {
+		ibrot += 1.0f;
+	}
+	else {
+		ibrot = 0.0;
+	}
+	switch (posib) {
+	case 0:
+		if (ibz <= 0.1f) {
+			ibz += 0.002f;
+		}
+		else
+			posib = 1;
+		break;
+	case 1:
+		if (ibz >= 0.0f) {
+			ibz -= 0.002f;
+		}
+		else
+			posib = 0;
 		break;
 	}
+	
 
 
 	guardarFrames = fopen("frames.txt", "w");
@@ -574,7 +717,7 @@ void animate(void){
 			}
 			else //Next frame interpolations
 			{
-				//printf("entro aqu√≠\n");
+				//printf("entro aquÌ\n");
 				i_curr_steps = 0; //Reset counter
 				//Interpolation
 				interpolation();
@@ -582,7 +725,7 @@ void animate(void){
 		}
 		else
 		{
-			//printf("se qued√≥ aqui\n");
+			//printf("se quedÛ aqui\n");
 			//printf("max steps: %f", i_max_steps);
 			//Draw animation
 			movAvion_x += KeyFrame[playIndex].movAvion_xInc;
@@ -611,12 +754,10 @@ int main() {
 	CreateObjects();
 	CreateShaders();
 
-	/*Se definen las dos c√°maras a utilizar*/
+	/*Se definen las dos c·maras a utilizar*/
 	//camera = Camera(glm::vec3(0.0f, 2.0f, 5.0f), glm::vec3(0.0f, 1.0f, 0.0f), -60.0f, 0.0f, 5.0f, 0.5f);
 	//Camara personaje
-
 	camera = Camera(glm::vec3(-40.0f, 10.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f), 180.0f, 0.0f, 5.0f, 0.5f); //(60.0f, 5.0f, 0.0f)
-
 	cameraIsometrica = Camera(glm::vec3(20.0f, 30.0f, 5.0f), glm::vec3(0.0f, 1.0f, 0.0f), -120.0f, -30.0f, 25.0f, 0.5f);
 
 	brickTexture = Texture("Textures/brick.png");
@@ -645,7 +786,12 @@ int main() {
 	Mario.LoadModel("Models/Mario/Mario/MarioKart.obj");
 	Luigi = Model();
 	Luigi.LoadModel("Models/Mario/Luigi/luigi_kart.obj");
-
+	Caparazon1 = Model();
+	Caparazon1.LoadModel("Models/Mario/Green & Red Shells/shellV.obj");
+	Caparazon2 = Model();
+	Caparazon2.LoadModel("Models/Mario/Green & Red Shells/shellV.obj");
+	ItemBlock = Model();
+	ItemBlock.LoadModel("Models/Mario/Item_box/box.obj");
 	//Modelos Crash 
 	Crash = Model();
 	Crash.LoadModel("Models/Crash/CrashKart.obj");
@@ -661,17 +807,18 @@ int main() {
 	Box_fruit.LoadModel("Models/Crash/caja_fruta.obj");
 	Box_time = Model();
 	Box_time.LoadModel("Models/Crash/caja_tiempo.obj");
-
 	
-//Luz direccional, s√≥lo 1 y siempre debe de existir
-	mainLight = DirectionalLight(5.0f, 5.0f, 5.0f, //Luz del dia
 
+
+
+//Luz direccional, sÛlo 1 y siempre debe de existir
+	mainLight = DirectionalLight(5.0f, 5.0f, 5.0f, //Luz del dia
 								0.1f, 0.3f,
 								0.0f, 0.0f, -1.0f);
 
 //Contador de luces puntuales
 	unsigned int pointLightCount = 0;
-	//Declaraci√≥n de primer luz puntual
+	//DeclaraciÛn de primer luz puntual
 	pointLights[0] = PointLight(1.0f, 1.0f, 1.0f,
 	//  aInt, dInt
 		5.0f, 2.0f,
@@ -763,9 +910,11 @@ int main() {
 	GLuint uniformColor = 0;
 	glm::mat4 projection = glm::perspective(45.0f, (GLfloat)mainWindow.getBufferWidth() / mainWindow.getBufferHeight(), 0.1f, 300.0f);
 	
+	
+
+
 	movCoche = 0.0f;
 	movOffset  = 1.0f;
-
 	//movZero = 0.0f;
 	avanza = 1;
 	activaCamara = 1;
@@ -969,9 +1118,9 @@ int main() {
 		//skyboxNoche.DrawSkybox(camera.calculateViewMatrix(), projection);
 		//skybox.DrawSkybox(camera.calculateViewMatrix(), projection);
 
-/**********************************FALTA ARREGLAR EL CICLO D√çA NOCHE*************************************
+/**********************************FALTA ARREGLAR EL CICLO DÕA NOCHE*************************************
 		if (activarDia = true) {
-			if (contadorDiaNoche > -10.0f) {//Posici√≥n inicial
+			if (contadorDiaNoche > -10.0f) {//PosiciÛn inicial
 				contadorDiaNoche -= contadorDiaNocheOff;//Llega al 10
 				skyboxDia.DrawSkybox(camera.calculateViewMatrix(), projection);
 				activarDia = true;
@@ -981,7 +1130,7 @@ int main() {
 			}
 		}
 		else {
-			if (contadorDiaNoche < 10.0f) {//Posici√≥n final
+			if (contadorDiaNoche < 10.0f) {//PosiciÛn final
 				contadorDiaNoche += contadorDiaNocheOff * deltaTime * 2;//Desde el +10 hasta el -10
 				skybox.DrawSkybox(camera.calculateViewMatrix(), projection);
 			}
@@ -997,16 +1146,16 @@ int main() {
 		uniformView = shaderList[0].GetViewLocation();
 		uniformEyePosition = shaderList[0].GetEyePositionLocation();
 		uniformColor = shaderList[0].getColorLocation();
-		//informaci√≥n en el shader de intensidad especular y brillo
+		//informaciÛn en el shader de intensidad especular y brillo
 		uniformSpecularIntensity = shaderList[0].GetSpecularIntensityLocation();
 		uniformShininess = shaderList[0].GetShininessLocation();
 
-		//// luz ligada a la c√°mara de tipo flash
+		//// luz ligada a la c·mara de tipo flash
 		//glm::vec3 lowerLight = camera.getCameraPosition();
 		//lowerLight.y -= 0.3f;
 		//spotLights[0].SetFlash(lowerLight, camera.getCameraDirection());
 
-		//informaci√≥n al shader de fuentes de iluminaci√≥n
+		//informaciÛn al shader de fuentes de iluminaciÛn
 		shaderList[0].SetDirectionalLight(&mainLight);
 		shaderList[0].SetPointLights(pointLights, pointLightCount);
 		shaderList[0].SetSpotLights(spotLights, spotLightCount);
@@ -1018,6 +1167,9 @@ int main() {
 		//Mario
 		glm::mat4 mario(1.0);
 		glm::mat4 luigi(1.0f);
+		glm::mat4 caparazon1(1.0);
+		glm::mat4 caparazon2(1.0);
+		glm::mat4 itemblock(1.0);
 		//Crash
 		glm::mat4 model(1.0);
 		glm::mat4 crash(1.0);
@@ -1040,13 +1192,13 @@ int main() {
 		Material_brillante.UseMaterial(uniformSpecularIntensity, uniformShininess);
 		meshList[2]->RenderMesh();
 
-		/***********************AQU√ç SE REALIZA EL CAMBIO DE C√ÅMARA*******************************/
-		if (mainWindow.getactivaCamara()) { //Al pulsar N, activa c√°mara isom√©trica
+		/***********************AQUÕ SE REALIZA EL CAMBIO DE C¡MARA*******************************/
+		if (mainWindow.getactivaCamara()) { //Al pulsar N, activa c·mara isomÈtrica
 			cameraIsometrica.keyControl(mainWindow.getsKeys(), deltaTime * 5.0f);
 			glUniformMatrix4fv(uniformView, 1, GL_FALSE, glm::value_ptr(cameraIsometrica.calculateViewMatrix()));
 			glUniform3f(uniformEyePosition, cameraIsometrica.getCameraPosition().x, cameraIsometrica.getCameraPosition().y, cameraIsometrica.getCameraPosition().z);
 		}
-		else {//Al pulsar M, activa c√°mara normal
+		else {//Al pulsar M, activa c·mara normal
 			//activaCamara = 0;
 			camera.keyControl(mainWindow.getsKeys(), deltaTime * 5);
 			camera.mouseControl(mainWindow.getXChange(), mainWindow.getYChange());
@@ -1058,10 +1210,8 @@ int main() {
 
 		//Museo
 		museo = glm::mat4(1.0);
-
 		museo = glm::translate(museo, glm::vec3(0.0f, 0.2f, 0.0f));
 		museo = glm::scale(museo, glm::vec3(2.0f));
-
 		//Museo = glm::rotate(crash, giroFan * toRadians, glm::vec3(0.0f, -1.0f, 0.0f));
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(museo));
 		Museo.RenderModel();
@@ -1071,7 +1221,6 @@ int main() {
 		mario = glm::translate(mario, glm::vec3(-42.9f+cmy, 2.7f, 2.6f+cmx));
 		mario = glm::scale(mario, glm::vec3(0.03f));
 		mario = glm::rotate(mario, (180+ cmrot) * toRadians, glm::vec3(0.0f, -1.0f, 0.0f));
-
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(mario));
 		Mario.RenderModel();
 
@@ -1080,10 +1229,40 @@ int main() {
 		luigi = glm::translate(luigi, glm::vec3(-43.4f+cly, 2.7f, 2.6f+clx));
 		luigi = glm::scale(luigi, glm::vec3(0.025f));
 		luigi = glm::rotate(luigi, (180+clrot) * toRadians, glm::vec3(0.0f, -1.0f, 0.0f));
-
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(luigi));
 		Luigi.RenderModel();
 		
+		//Caparazon 1
+		caparazon1 = glm::mat4(1.0);
+		caparazon1 = glm::translate(caparazon1, glm::vec3(-40.5f+c1y, 2.6f+c1z, -2.5f+c1x));
+		caparazon1 = glm::scale(caparazon1, glm::vec3(0.15f));
+		caparazon1 = glm::rotate(caparazon1, (180+c1rot) * toRadians, glm::vec3(0.0f, -1.0f, 0.0f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(caparazon1));
+		Caparazon1.RenderModel();
+
+		//Caparazon 2
+		caparazon2 = glm::mat4(1.0);
+		caparazon2 = glm::translate(caparazon2, glm::vec3(-41.0f+c2y, 2.6f+c2z, -2.5f+c2x));
+		caparazon2 = glm::scale(caparazon2, glm::vec3(0.15f));
+		caparazon2 = glm::rotate(caparazon2, (180+c2rot) * toRadians, glm::vec3(0.0f, -1.0f, 0.0f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(caparazon2));
+		Caparazon2.RenderModel();
+		
+		//Bloques de objetos
+		//1
+		itemblock = glm::mat4(1.0);
+		itemblock = glm::translate(itemblock, glm::vec3(-40.5f, 3.0f + ibz, -2.5f));
+		itemblock = glm::scale(itemblock, glm::vec3(0.15f));
+		itemblock = glm::rotate(itemblock, (180 + ibrot) * toRadians, glm::vec3(0.0f, -1.0f, 0.0f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(itemblock));
+		ItemBlock.RenderModel();
+		//2
+		itemblock = glm::mat4(1.0);
+		itemblock = glm::translate(itemblock, glm::vec3(-41.0f, 3.0f + ibz, -2.5f ));
+		itemblock = glm::scale(itemblock, glm::vec3(0.15f));
+		itemblock = glm::rotate(itemblock, (180 + ibrot) * toRadians, glm::vec3(0.0f, -1.0f, 0.0f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(itemblock));
+		ItemBlock.RenderModel();
 
 		//Sala de Crash
 		//----------------------------------------------------------------
@@ -1204,7 +1383,7 @@ void inputKeyframes(bool* keys){
 		}
 	}
 	
-	//Implementaci√≥n de teclado para la variable de traslaci√≥n en X positivo
+	//ImplementaciÛn de teclado para la variable de traslaciÛn en X positivo
 	if (keys[GLFW_KEY_1]){
 		if (ciclo < 1){
 			movAvion_x += 1.0f;
@@ -1214,7 +1393,7 @@ void inputKeyframes(bool* keys){
 		}
 		
 	}
-	//Implementaci√≥n de teclado para la variable de traslaci√≥n en X negativo
+	//ImplementaciÛn de teclado para la variable de traslaciÛn en X negativo
 	if (keys[GLFW_KEY_3]) {
 		if (ciclo < 1) {
 			//printf("movAvion_x(-) es: %f\n", movAvion_x);
@@ -1226,7 +1405,7 @@ void inputKeyframes(bool* keys){
 		}
 	}
 
-	//Implementaci√≥n de teclado para la variable de traslaci√≥n en Y positivo
+	//ImplementaciÛn de teclado para la variable de traslaciÛn en Y positivo
 	if (keys[GLFW_KEY_4]) {
 		if (ciclo < 1) {
 			//printf("movAvion_y(+) es: %f\n", movAvion_y);
@@ -1238,7 +1417,7 @@ void inputKeyframes(bool* keys){
 		}
 
 	}
-	//Implementaci√≥n de teclado para la variable de traslaci√≥n en Y negativo
+	//ImplementaciÛn de teclado para la variable de traslaciÛn en Y negativo
 	if (keys[GLFW_KEY_5]) {
 		if (ciclo < 1) {
 			//printf("movAvion_y(-) es: %f\n", movAvion_y);
@@ -1250,7 +1429,7 @@ void inputKeyframes(bool* keys){
 		}
 	}
 
-	//Implementaci√≥n de teclado para la variable GIRO DEL AVI√ìN
+	//ImplementaciÛn de teclado para la variable GIRO DEL AVI”N
 	if (keys[GLFW_KEY_6]) {
 		if (ciclo < 1) {
 			//printf("movAvion_y(-) es: %f\n", movAvion_y);
@@ -1262,7 +1441,7 @@ void inputKeyframes(bool* keys){
 		}
 	}
 
-	//Implementaci√≥n de teclado para la variable GIRO DEL AVI√ìN
+	//ImplementaciÛn de teclado para la variable GIRO DEL AVI”N
 	if (keys[GLFW_KEY_7]) {
 		if (ciclo < 1) {
 			//printf("movAvion_y(-) es: %f\n", movAvion_y);
@@ -1366,7 +1545,7 @@ void inputJoystick() {
 
 
 void musica2D() {
-	//Inicia el m√≥dulo con los par√°metros por defecto
+	//Inicia el mÛdulo con los par·metros por defecto
 	ISoundEngine* engine = createIrrKlangDevice();
 	ISoundEngine* engine2 = createIrrKlangDevice();
 	
