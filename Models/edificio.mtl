@@ -29,7 +29,7 @@ Ke 0.000000 0.000000 0.000000
 Ni 1.450000
 d 1.000000
 illum 1
-map_Kd Mario/Bowser/Tex_0336_0.png
+map_Kd Tex_0336_0.png
 
 newmtl bowser_eyes
 Ns 0.000000
@@ -39,7 +39,7 @@ Ke 0.000000 0.000000 0.000000
 Ni 1.450000
 d 1.000000
 illum 1
-map_Kd Mario/Bowser/Tex_0339_0.png
+map_Kd Tex_0339_0.png
 
 newmtl bowserkart_body
 Ns 0.000000
@@ -49,7 +49,7 @@ Ke 0.000000 0.000000 0.000000
 Ni 1.450000
 d 1.000000
 illum 1
-map_Kd Mario/BowserKartArcade/Tex_0336_0.png
+map_Kd Tex_0336_0.png
 
 newmtl bowserkart_hole
 Ns 0.000000
@@ -59,7 +59,7 @@ Ke 0.000000 0.000000 0.000000
 Ni 1.450000
 d 1.000000
 illum 1
-map_Kd Mario/BowserKartArcade/Tex_0338_0.png
+map_Kd Tex_0338_0.png
 
 newmtl bowserkart_wheel
 Ns 0.000000
@@ -69,7 +69,7 @@ Ke 0.000000 0.000000 0.000000
 Ni 1.450000
 d 1.000000
 illum 1
-map_Kd Mario/BowserKartArcade/Tex_0341_0.png
+map_Kd Tex_0341_0.png
 
 newmtl box_mat
 Ns 96.078453
@@ -78,8 +78,8 @@ Ks 0.000000 0.000000 0.000000
 Ke 0.000000 0.000000 0.000000
 Ni 1.000000
 illum 1
-map_Kd Mario/Item_box/box_mat.png
-map_d Mario/Item_box/box_mat.png
+map_Kd box_mat.png
+map_d box_mat.png
 
 newmtl brick
 Ns 0.000000
@@ -88,8 +88,8 @@ Ks 0.000000 0.000000 0.000000
 Ke 0.000000 0.000000 0.000000
 Ni 1.450000
 illum 1
-map_Kd mapa/brick.png
-map_d mapa/brick.png
+map_Kd brick.png
+map_d brick.png
 
 newmtl kart_body
 Ns 96.078453
@@ -98,8 +98,8 @@ Ks 0.500000 0.500000 0.500000
 Ke 0.000000 0.000000 0.000000
 Ni 1.000000
 illum 9
-map_Kd Mario/ToadKartDS/kart_body.png
-map_d Mario/ToadKartDS/kart_body.png
+map_Kd kart_body_T.png
+map_d kart_body_T.png
 
 newmtl kart_body.001
 Ns 96.078453
@@ -108,8 +108,8 @@ Ks 0.500000 0.500000 0.500000
 Ke 0.000000 0.000000 0.000000
 Ni 1.000000
 illum 9
-map_Kd Mario/PeachKartDS/kart_body.png
-map_d Mario/PeachKartDS/kart_body.png
+map_Kd kart_body.png
+map_d kart_body.png
 
 newmtl kart_emblem
 Ns 96.078453
@@ -118,8 +118,8 @@ Ks 0.500000 0.500000 0.500000
 Ke 0.000000 0.000000 0.000000
 Ni 1.000000
 illum 9
-map_Kd Mario/ToadKartDS/kart_emblem.png
-map_d Mario/ToadKartDS/kart_emblem.png
+map_Kd kart_emblem_T.png
+map_d kart_emblem_T.png
 
 newmtl kart_emblem.001
 Ns 96.078453
@@ -128,8 +128,8 @@ Ks 0.500000 0.500000 0.500000
 Ke 0.000000 0.000000 0.000000
 Ni 1.000000
 illum 9
-map_Kd Mario/PeachKartDS/kart_emblem.png
-map_d Mario/PeachKartDS/kart_emblem.png
+map_Kd kart_emblem.png
+map_d kart_emblem.png
 
 newmtl kart_tire
 Ns 96.078453
@@ -138,8 +138,8 @@ Ks 0.500000 0.500000 0.500000
 Ke 0.000000 0.000000 0.000000
 Ni 1.000000
 illum 9
-map_Kd Mario/ToadKartDS/kart_tire.png
-map_d Mario/ToadKartDS/kart_tire.png
+map_Kd kart_tire_T.png
+map_d kart_tire_T.png
 
 newmtl kart_tire.001
 Ns 96.078453
@@ -148,8 +148,8 @@ Ks 0.500000 0.500000 0.500000
 Ke 0.000000 0.000000 0.000000
 Ni 1.000000
 illum 9
-map_Kd Mario/PeachKartDS/kart_tire.png
-map_d Mario/PeachKartDS/kart_tire.png
+map_Kd kart_tire.png
+map_d kart_tire.png
 
 newmtl koura_w_mat
 Ns 92.156860
@@ -158,8 +158,8 @@ Ks 0.500000 0.500000 0.500000
 Ke 0.000000 0.000000 0.000000
 Ni 1.000000
 illum 2
-map_Kd Mario/Blueshell/koura_w_mat.png
-map_d Mario/Blueshell/koura_w_mat.png
+map_Kd koura_w_mat.png
+map_d koura_w_mat.png
 
 newmtl lambert212
 Ns 0.000000
@@ -168,8 +168,8 @@ Ks 0.000000 0.000000 0.000000
 Ke 0.000000 0.000000 0.000000
 Ni 1.450000
 illum 1
-map_Kd mapa/lambert212.png
-map_d mapa/lambert212.png
+map_Kd lambert212.png
+map_d lambert212.png
 
 newmtl lambert221
 Ns 0.000000
@@ -178,8 +178,8 @@ Ks 0.000000 0.000000 0.000000
 Ke 0.000000 0.000000 0.000000
 Ni 1.450000
 illum 1
-map_Kd mapa/lambert221.png
-map_d mapa/lambert221.png
+map_Kd lambert221.png
+map_d lambert221.png
 
 newmtl lambert222
 Ns 0.000000
@@ -188,8 +188,8 @@ Ks 0.000000 0.000000 0.000000
 Ke 0.000000 0.000000 0.000000
 Ni 1.450000
 illum 1
-map_Kd mapa/lambert222.png
-map_d mapa/lambert222.png
+map_Kd lambert222.png
+map_d lambert222.png
 
 newmtl lambert223
 Ns 0.000000
@@ -198,8 +198,8 @@ Ks 0.000000 0.000000 0.000000
 Ke 0.000000 0.000000 0.000000
 Ni 1.450000
 illum 1
-map_Kd mapa/lambert223.png
-map_d mapa/lambert223.png
+map_Kd lambert223.png
+map_d lambert223.png
 
 newmtl lambert224
 Ns 0.000000
@@ -208,8 +208,8 @@ Ks 0.000000 0.000000 0.000000
 Ke 0.000000 0.000000 0.000000
 Ni 1.450000
 illum 1
-map_Kd mapa/lambert224.png
-map_d mapa/lambert224.png
+map_Kd lambert224.png
+map_d lambert224.png
 
 newmtl lambert231
 Ns 0.000000
@@ -218,8 +218,8 @@ Ks 0.000000 0.000000 0.000000
 Ke 0.000000 0.000000 0.000000
 Ni 1.450000
 illum 1
-map_Kd mapa/lambert231.png
-map_d mapa/lambert231.png
+map_Kd lambert231.png
+map_d lambert231.png
 
 newmtl lambert232
 Ns 0.000000
@@ -228,8 +228,8 @@ Ks 0.000000 0.000000 0.000000
 Ke 0.000000 0.000000 0.000000
 Ni 1.450000
 illum 1
-map_Kd mapa/lambert232.png
-map_d mapa/lambert232.png
+map_Kd lambert232.png
+map_d lambert232.png
 
 newmtl lambert233
 Ns 0.000000
@@ -238,8 +238,8 @@ Ks 0.000000 0.000000 0.000000
 Ke 0.000000 0.000000 0.000000
 Ni 1.450000
 illum 1
-map_Kd mapa/lambert233.png
-map_d mapa/lambert233.png
+map_Kd lambert233.png
+map_d lambert233.png
 
 newmtl lambert236
 Ns 0.000000
@@ -248,8 +248,8 @@ Ks 0.000000 0.000000 0.000000
 Ke 0.000000 0.000000 0.000000
 Ni 1.450000
 illum 1
-map_Kd mapa/lambert236.png
-map_d mapa/lambert236.png
+map_Kd lambert236.png
+map_d lambert236.png
 
 newmtl lambert237
 Ns 0.000000
@@ -258,8 +258,8 @@ Ks 0.000000 0.000000 0.000000
 Ke 0.000000 0.000000 0.000000
 Ni 1.450000
 illum 1
-map_Kd mapa/lambert237.png
-map_d mapa/lambert237.png
+map_Kd lambert237.png
+map_d lambert237.png
 
 newmtl ltrain_body
 Ns 0.000000
@@ -269,7 +269,7 @@ Ke 0.000000 0.000000 0.000000
 Ni 1.450000
 d 1.000000
 illum 1
-map_Kd Mario/LuigiTrainArcade/Tex_0229_0.png
+map_Kd Tex_0229_0.png
 
 newmtl ltrain_wheel
 Ns 0.000000
@@ -279,7 +279,7 @@ Ke 0.000000 0.000000 0.000000
 Ni 1.450000
 d 1.000000
 illum 1
-map_Kd Mario/LuigiTrainArcade/Tex_0243_0.png
+map_Kd Tex_0243_0.png
 
 newmtl mat_kinoko
 Ns 250.000000
@@ -289,7 +289,7 @@ Ke 0.000000 0.000000 0.000000
 Ni 1.450000
 d 1.000000
 illum 1
-map_Kd Mario/Mushroom/I_kinoko.0.png
+map_Kd I_kinoko.0.png
 
 newmtl mesh0012mat
 Ns 0.000000
@@ -299,7 +299,7 @@ Ke 0.000000 0.000000 0.000000
 Ni 1.450000
 d 1.000000
 illum 1
-map_Kd Mario/Toad/t0012_0.png
+map_Kd t0012_0.png
 
 newmtl mesh0014mat
 Ns 0.000000
@@ -309,7 +309,7 @@ Ke 0.000000 0.000000 0.000000
 Ni 1.450000
 d 1.000000
 illum 1
-map_Kd Mario/Toad/t0278_0.png
+map_Kd t0278_0.png
 
 newmtl mesh0023mat
 Ns 0.000000
@@ -319,7 +319,7 @@ Ke 0.000000 0.000000 0.000000
 Ni 1.450000
 d 1.000000
 illum 1
-map_Kd Mario/Mario/t0262_0.png
+map_Kd t0262_0.png
 
 newmtl mesh0032mat
 Ns 0.000000
@@ -329,7 +329,7 @@ Ke 0.000000 0.000000 0.000000
 Ni 1.450000
 d 1.000000
 illum 1
-map_Kd Mario/Mario/t0272_0.png
+map_Kd t0272_0.png
 
 newmtl mesh0039mat
 Ns 0.000000
@@ -339,7 +339,7 @@ Ke 0.000000 0.000000 0.000000
 Ni 1.450000
 d 1.000000
 illum 1
-map_Kd Mario/Luigi/t0321_0.png
+map_Kd t0321_0.png
 
 newmtl mesh0046mat
 Ns 0.000000
@@ -349,7 +349,7 @@ Ke 0.000000 0.000000 0.000000
 Ni 1.450000
 d 1.000000
 illum 1
-map_Kd Mario/Luigi/t0329_0.png
+map_Kd t0329_0.png
 
 newmtl mesh0294mat
 Ns 0.000000
@@ -359,7 +359,7 @@ Ke 0.000000 0.000000 0.000000
 Ni 1.450000
 d 1.000000
 illum 1
-map_Kd Mario/Peach/t0294_0.png
+map_Kd t0294_0.png
 
 newmtl mesh0298mat
 Ns 0.000000
@@ -369,7 +369,7 @@ Ke 0.000000 0.000000 0.000000
 Ni 1.450000
 d 1.000000
 illum 1
-map_Kd Mario/Peach/t0298_0.png
+map_Kd t0298_0.png
 
 newmtl mesh0308mat
 Ns 0.000000
@@ -379,7 +379,7 @@ Ke 0.000000 0.000000 0.000000
 Ni 1.450000
 d 1.000000
 illum 1
-map_Kd Mario/Peach/t0294_0.png
+map_Kd t0294_0.png
 
 newmtl mesh0330mat
 Ns 0.000000
@@ -389,7 +389,7 @@ Ke 0.000000 0.000000 0.000000
 Ni 1.450000
 d 1.000000
 illum 1
-map_Kd Mario/Donkey_Kong/t0330_0.png
+map_Kd t0330_0.png
 
 newmtl mesh0334mat
 Ns 0.000000
@@ -399,7 +399,7 @@ Ke 0.000000 0.000000 0.000000
 Ni 1.450000
 d 1.000000
 illum 1
-map_Kd Mario/Donkey_Kong/t0334_0.png
+map_Kd t0334_0.png
 
 newmtl paredes
 Ns 250.000000
@@ -459,7 +459,7 @@ Ke 0.000000 0.000000 0.000000
 Ni 1.450000
 d 1.000000
 illum 1
-map_Kd Mario/Green & Red Shells/shell_red_all4_fix.png
+map_Kd shell_red_all4_fix.png
 
 newmtl shell_red_tx.001
 Ns 250.000000
@@ -469,4 +469,4 @@ Ke 0.000000 0.000000 0.000000
 Ni 1.450000
 d 1.000000
 illum 1
-map_Kd Mario/Green & Red Shells/shell_green_all3_fix.png
+map_Kd shell_green_all3_fix.png

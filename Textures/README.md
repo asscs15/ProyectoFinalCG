@@ -1,1 +1,1 @@
-# Texturas de los Modelos
+# Teturas de los modelos utilizados
