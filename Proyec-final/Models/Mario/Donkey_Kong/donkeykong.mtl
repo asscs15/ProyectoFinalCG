@@ -1,0 +1,20 @@
+# Material file for donkeykong.obj
+
+newmtl mesh0330mat
+	Ns 0
+	d 1
+	illum 2
+	Kd 1.0 1.0 1.0
+	Ks 0.0 0.0 0.0
+	Ka 0.0 0.0 0.0
+	map_Kd t0330_0.png
+
+newmtl mesh0334mat
+	Ns 0
+	d 1
+	illum 2
+	Kd 1.0 1.0 1.0
+	Ks 0.0 0.0 0.0
+	Ka 0.0 0.0 0.0
+	map_Kd t0334_0.png
+
