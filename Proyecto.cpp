@@ -1,11 +1,14 @@
 /*
 PROYECTO FINAL COMPUTACION GRAFICA 
-ALUMNO:CALLEJAS SANCHEZ JUAN ANTONIO
-No CUENTA: 316294591
-GRUPO: 06
+Equipo 14
+- Cruz Cedillo Daniel Alejandro 316083298
+- Callejas Sanchez Juan Antonio 316294591
+- Gonz√°lez Lorenzo Daniela Michel 314312817
+GRUPO: 03
 SEMESTRE 2023-2
 
 */
+
 
 
 #define STB_IMAGE_IMPLEMENTATION
@@ -39,7 +42,7 @@ using namespace irrklang;
 #include "Shader_light.h"
 #include "Camera.h"
 #include "Texture.h"
-//para iluminaciÛn
+//para iluminaci√≥n
 #include "CommonValues.h"
 #include "DirectionalLight.h"
 #include "PointLight.h"
@@ -54,13 +57,13 @@ using namespace irrklang;
 
 
 
-FILE *guardarFrames;
+FILE* guardarFrames;
 const float toRadians = 3.14159265f / 180.0f;
-float movCoche,movZeroX,movZeroZ,rotarPokebola,rotaPuerta,contadorDiaNoche,contadorDiaNocheOff;
+float movCoche, movZeroX, movZeroZ, rotarPokebola, rotaPuerta, contadorDiaNoche, contadorDiaNocheOff;
 float movOffset;
 float rotapato;
 float giroLlanta, giroLlantaOff;
-bool avanza,patoadelante,activaCamara, activaPantallaCompleta,activa_rotaPuerta1, activa_rotaPuerta2, activarDia = true;
+bool avanza, patoadelante, activaCamara, activaPantallaCompleta, activa_rotaPuerta1, activa_rotaPuerta2, activarDia = true;
 float reproduciranimacion, habilitaranimacion, guardoFrame, reinicioFrame, ciclo, ciclo2, contador = 0;
 
 std::vector<Mesh*> meshList;
@@ -68,8 +71,8 @@ std::vector<Shader> shaderList;
 
 //Ventanas window
 Window mainWindow;
-//C·maras
-Camera camera,cameraIsometrica;
+//C√°maras
+Camera camera, cameraIsometrica;
 //Texturas
 Texture brickTexture;
 Texture dirtTexture;
@@ -98,32 +101,26 @@ Model Museo;
 //Mario
 Model Mario;
 Model Luigi;
-Model Caparazon1, Caparazon2;
-Model ItemBlock;
-	//variables animaciones mario
-	//Carro mario
-	int poscm = 0;
-	float cmx=0.0f, cmy=0.0f, cmrot=0.0f;
-	//Carro Luigi
-	int poscl = 0;
-	float clx = 0.0f, cly = 0.0f, clrot = 0.0f;
-	int posc1 = 100;
-	//Caparazon 1
-	float c1x = 0.0f, c1y = 0.0f,c1z=10.0f, c1rot = 0.0f;
-	//Caparazon 2
-	int posc2 = 100;
-	float c2x = 0.0f, c2y = 0.0f,c2z=10.0f, c2rot = 0.0f;
-	//Item box
-	int posib = 0;
-	float ibrot = 0.0f, ibz = 0.0f;
+//variables animaciones mario
+int poscm = 0;
+float cmx = 0.0f, cmy = 0.0f, cmrot = 0.0f;
+int poscl = 0;
+float clx = 0.0f, cly = 0.0f, clrot = 0.0f;
+
+//variables animaciones Aku
+int Akucm = 0;
+float Akux = 0.0f, Akuy = 0.0f, Akuz = 0.0f, Akurot = 0.0f;
+float Akuclx = 0.0f, Akucly = 0.0f, Akuclrot = 0.0f;
+
 //Crash
-Model Crash;
-Model Coco;
-Model Cortex;
 Model Aku;
-Model Box_power;
-Model Box_fruit;
-Model Box_time;
+Model CejaD;
+Model CejaI;
+Model P_ama;
+Model P_azul;
+Model P_rojo;
+Model P_ver;
+Model Person;
 
 //ModelAnim 
 
@@ -136,7 +133,7 @@ static double limitFPS = 1.0 / 60.0;
 void musica2D();
 
 //Void musica
-void musica3D();
+//void musica3D();
 
 //Void joystick
 void inputJoystick();
@@ -149,9 +146,9 @@ static const char* vShader = "shaders/shader_light.vert";
 // Fragment Shader
 static const char* fShader = "shaders/shader_light.frag";
 
-//c·lculo del promedio de las normales para sombreado de Phong
-void calcAverageNormals(unsigned int * indices, unsigned int indiceCount, GLfloat * vertices, unsigned int verticeCount, 
-						unsigned int vLength, unsigned int normalOffset)
+//c√°lculo del promedio de las normales para sombreado de Phong
+void calcAverageNormals(unsigned int* indices, unsigned int indiceCount, GLfloat* vertices, unsigned int verticeCount,
+	unsigned int vLength, unsigned int normalOffset)
 {
 	for (size_t i = 0; i < indiceCount; i += 3)
 	{
@@ -162,7 +159,7 @@ void calcAverageNormals(unsigned int * indices, unsigned int indiceCount, GLfloa
 		glm::vec3 v2(vertices[in2] - vertices[in0], vertices[in2 + 1] - vertices[in0 + 1], vertices[in2 + 2] - vertices[in0 + 2]);
 		glm::vec3 normal = glm::cross(v1, v2);
 		normal = glm::normalize(normal);
-		
+
 		in0 += normalOffset; in1 += normalOffset; in2 += normalOffset;
 		vertices[in0] += normal.x; vertices[in0 + 1] += normal.y; vertices[in0 + 2] += normal.z;
 		vertices[in1] += normal.x; vertices[in1 + 1] += normal.y; vertices[in1 + 2] += normal.z;
@@ -180,7 +177,7 @@ void calcAverageNormals(unsigned int * indices, unsigned int indiceCount, GLfloa
 
 
 void CreateObjects() {
-	unsigned int indices[] = {		
+	unsigned int indices[] = {
 		0, 3, 1,
 		1, 3, 2,
 		2, 3, 0,
@@ -188,11 +185,11 @@ void CreateObjects() {
 	};
 
 	GLfloat vertices[] = {
-	//	x      y      z			u	  v			nx	  ny    nz
-		-1.0f, -1.0f, -0.6f,	0.0f, 0.0f,		0.0f, 0.0f, 0.0f,
-		0.0f, -1.0f, 1.0f,		0.5f, 0.0f,		0.0f, 0.0f, 0.0f,
-		1.0f, -1.0f, -0.6f,		1.0f, 0.0f,		0.0f, 0.0f, 0.0f,
-		0.0f, 1.0f, 0.0f,		0.5f, 1.0f,		0.0f, 0.0f, 0.0f
+		//	x      y      z			u	  v			nx	  ny    nz
+			-1.0f, -1.0f, -0.6f,	0.0f, 0.0f,		0.0f, 0.0f, 0.0f,
+			0.0f, -1.0f, 1.0f,		0.5f, 0.0f,		0.0f, 0.0f, 0.0f,
+			1.0f, -1.0f, -0.6f,		1.0f, 0.0f,		0.0f, 0.0f, 0.0f,
+			0.0f, 1.0f, 0.0f,		0.5f, 1.0f,		0.0f, 0.0f, 0.0f
 	};
 
 	unsigned int floorIndices[] = {
@@ -248,7 +245,7 @@ void CreateObjects() {
 		20, 21, 22,
 		22, 23, 20,
 	};
-	
+
 	GLfloat cubo_vertices[] = {
 		//FRONT
 		//x		y		z		S		T			NX		NY		NZ
@@ -273,7 +270,7 @@ void CreateObjects() {
 		-0.5f, -0.5f,  -0.5f,	0.0f,	0.35f,		1.0f,	0.0f,	0.0f,
 		-0.5f, -0.5f,  0.5f,	0.23f,  0.35f,		1.0f,	0.0f,	0.0f,
 		-0.5f,  0.5f,  0.5f,	0.23f,	0.64f,		1.0f,	0.0f,	0.0f,
-		-0.5f,  0.5f,  -0.5f,	0.0f,	0.64f,		1.0f,	0.0f,	0.0f, 
+		-0.5f,  0.5f,  -0.5f,	0.0f,	0.64f,		1.0f,	0.0f,	0.0f,
 
 		//DOWN
 		-0.5f, -0.5f,  0.5f,	0.27f,	0.02f,		0.0f,	1.0f,	0.0f,
@@ -289,21 +286,21 @@ void CreateObjects() {
 
 	};
 
-	Mesh *obj1 = new Mesh();
+	Mesh* obj1 = new Mesh();
 	obj1->CreateMesh(vertices, indices, 32, 12);
 	meshList.push_back(obj1);
 
-	Mesh *piramide = new Mesh();
+	Mesh* piramide = new Mesh();
 	piramide->CreateMesh(vertices, indices, 32, 12);
 	meshList.push_back(piramide);
 
-	Mesh *piso = new Mesh();
+	Mesh* piso = new Mesh();
 	piso->CreateMesh(floorVertices, floorIndices, 32, 6);
 	meshList.push_back(piso);
 
 	calcAverageNormals(vegetacionIndices, 12, vegetacionVertices, 64, 8, 5);
 
-	Mesh *cruz = new Mesh();
+	Mesh* cruz = new Mesh();
 	cruz->CreateMesh(vegetacionVertices, vegetacionIndices, 64, 12);
 	meshList.push_back(cruz);
 
@@ -313,8 +310,8 @@ void CreateObjects() {
 
 }
 
-void CreateShaders(){
-	Shader *shader1 = new Shader();
+void CreateShaders() {
+	Shader* shader1 = new Shader();
 	shader1->CreateFromFiles(vShader, fShader);
 	shaderList.push_back(*shader1);
 }
@@ -328,10 +325,8 @@ float posXavion = 2.0, posYavion = 2.0, posZavion = 0;
 float	movAvion_x = 0.0f, movAvion_y = 0.0f;
 float giroAvion = 0;
 
-float posXdona = 0.0, posYdona = 0.0, posZdona = -7.0;
-float posXhomero = 0.0, posYhomero = 0.0, posZhomerp = -7.0;
-float	movFan_x = 0.0f, movFan_y = 0.0f, movFan_z = 0.0f;
-float giroFan = 90;
+float	movFan_x = 0.0f, movFan_y = 1.0f, movFan_z = -10.0f;
+float giroFan = 180;
 
 #define MAX_FRAMES 50
 int i_max_steps = 270;
@@ -361,7 +356,7 @@ int FrameIndex = 46;			//introducir datos
 bool play = false;
 int playIndex = 0;
 
-void saveFrame(void){
+void saveFrame(void) {
 
 	printf("frameindex %d\n", FrameIndex);
 	KeyFrame[FrameIndex].movAvion_x = movAvion_x;
@@ -374,18 +369,18 @@ void saveFrame(void){
 	FrameIndex++;
 }
 
-void resetElements(void){
-	
+void resetElements(void) {
+
 	movAvion_x = KeyFrame[0].movAvion_x;
 	movAvion_y = KeyFrame[0].movAvion_y;
-	giroAvion= KeyFrame[0].giroAvion;
+	giroAvion = KeyFrame[0].giroAvion;
 	movFan_x = KeyFrame[0].movFan_x;
 	movFan_y = KeyFrame[0].movFan_y;
 	movFan_z = KeyFrame[0].movFan_z;
 	giroFan = KeyFrame[0].giroFan;
 }
 
-void interpolation(void){
+void interpolation(void) {
 	KeyFrame[playIndex].movAvion_xInc = (KeyFrame[playIndex + 1].movAvion_x - KeyFrame[playIndex].movAvion_x) / i_max_steps;
 	KeyFrame[playIndex].movAvion_yInc = (KeyFrame[playIndex + 1].movAvion_y - KeyFrame[playIndex].movAvion_y) / i_max_steps;
 	KeyFrame[playIndex].giroAvionInc = (KeyFrame[playIndex + 1].giroAvion - KeyFrame[playIndex].giroAvion) / i_max_steps;
@@ -397,27 +392,27 @@ void interpolation(void){
 
 
 
-void animate(void){
+void animate(void) {
 	//Ruta carro Mario
 	switch (poscm) {
 	case 0:
-		cmx = 0.0f;
-		cmy = 0.0f;
-		cmrot = 0.0f;
+		cmx = 0.0;
+		cmy = 0.0;
+		cmrot = 0.0;
 		poscm = 1;
 		break;
 	case 1:
 		if (cmx >= -2) {
-			cmx -= 0.01f;
+			cmx -= 0.01;
 		}
 		else
 			poscm = 2;
 		break;
 	case 2:
 		if (cmrot <= 80) {
-			cmx -= 0.01f;
-			cmy += 0.005f;
-			cmrot += 0.6f;
+			cmx -= 0.01;
+			cmy += 0.005;
+			cmrot += 0.6;
 		}
 		else
 			poscm = 3;
@@ -425,93 +420,83 @@ void animate(void){
 
 	case 3:
 		if (cmy <= 1.3) {
-			cmy += 0.02f;
+			cmy += 0.02;
 		}
 		else
 			poscm = 4;
 		break;
 	case 4:
 		if (cmrot >= 0) {
-			cmx -= 0.007f;
-			cmy += 0.01f;
-			cmrot -= 0.7f;
+			cmx -= 0.007;
+			cmy += 0.01;
+			cmrot -= 0.7;
 		}
 		else
 			poscm = 5;
 		break;
 	case 5:
 		if (cmx >= -6) {
-			cmx -= 0.02f;
-			if (cmx <= -5.0f) {
-				c1z = 0.0f;
-			}
-
+			cmx -= 0.02;
 		}
-		else {
-
+		else
 			poscm = 6;
-		}
-
 		break;
 	case 6:
 		if (cmrot >= -90) {
-			cmx -= 0.007f;
-			cmy -= 0.01f;
-			cmrot -= 0.7f;
+			cmx -= 0.007;
+			cmy -= 0.01;
+			cmrot -= 0.7;
 		}
 		else
 			poscm = 7;
 		break;
 	case 7:
 		if (cmrot <= 0) {
-			cmx -= 0.007f;
-			cmy -= 0.01f;
-			cmrot += 0.7f;
-			if (cmy <= 0.1) {
-				cmrot += 4.0f;
-			}
+			cmx -= 0.007;
+			cmy -= 0.01;
+			cmrot += 0.7;
 		}
 		else
 			poscm = 8;
 		break;
 	case 8:
 		if (cmx >= -8) {
-			cmx -= 0.02f;
-			cmrot += 4.0f;
+			cmx -= 0.02;
 		}
 		else
-		{
-			cmrot += 4.0f;
-			if (poscl == 8) {
-				poscm = 0;
-				printf("posicion final: x= %f y=%f", clx, cly);
-			}
-
-		}
+			poscm = 9;
 		break;
-
+	case 9:
+		if (cmrot <= 90) {
+			cmx -= 0.01;
+			cmy += 0.01;
+			cmrot += 0.7;
+		}
+		else
+			poscm = 0;
+		break;
 	}
-	
+
 	//Ruta carro Luigi
 	switch (poscl) {
 	case 0:
-		clx = 0.0f;
-		cly = 0.0f;
-		clrot = 0.0f;
+		clx = 0.0;
+		cly = 0.0;
+		clrot = 0.0;
 		poscl = 1;
 		break;
 	case 1:
 		if (clx >= -2) {
-			clx -= 0.01f;
+			clx -= 0.01;
 		}
 		else
 			poscl = 2;
 		break;
 	case 2:
 		if (clrot <= 80) {
-			clx -= 0.01f;
-			cly += 0.005f;
-			clrot += 0.6f;
+			clx -= 0.01;
+			cly += 0.005;
+			clrot += 0.6;
 		}
 		else
 			poscl = 3;
@@ -519,197 +504,130 @@ void animate(void){
 
 	case 3:
 		if (cly <= 1.3) {
-			cly += 0.02f;
+			cly += 0.02;
 		}
 		else
 			poscl = 4;
 		break;
 	case 4:
 		if (clrot >= 0) {
-			clx -= 0.007f;
-			cly += 0.01f;
-			clrot -= 0.7f;
+			clx -= 0.007;
+			cly += 0.01;
+			clrot -= 0.7;
 		}
 		else
 			poscl = 5;
 		break;
 	case 5:
 		if (clx >= -6) {
-			clx -= 0.02f;
-			if (clx >= -6) {
-				clx -= 0.02f;
-				if (clx <= -5.0f) {
-					c2z = 0.0f;
-					posc1 = posc2 = 0;
-				}
-
-			}
+			clx -= 0.02;
 		}
-		else {
+		else
 			poscl = 6;
-		}
-			
 		break;
 	case 6:
 		if (clrot >= -90) {
-			clx -= 0.007f;
-			cly -= 0.01f;
-			clrot -= 0.7f;
+			clx -= 0.007;
+			cly -= 0.01;
+			clrot -= 0.7;
 		}
 		else
 			poscl = 7;
 		break;
 	case 7:
 		if (clrot <= 0) {
-			clx -= 0.007f;
-			cly -= 0.01f;
-			clrot += 0.7f;
-			if (cly <= 0.4) {
-				clrot += 4.0f;
-			}
+			clx -= 0.007;
+			cly -= 0.01;
+			clrot += 0.7;
 		}
 		else
 			poscl = 8;
 		break;
 	case 8:
-		if (clx >= -8.0) {
-			clx -= 0.02f;
-			clrot += 4.0f;
+		if (clx >= -8) {
+			clx -= 0.02;
 		}
-		else {
-			clrot += 4.0f;
-			if (poscm == 0) {
-				poscl = 0;
-				printf("posicion final: x= %f y=%f", clx, cly);
-			}
-			
-		}
+		else
+			poscl = 9;
 		break;
+	case 9:
+		if (clrot <= 90) {
+			clx -= 0.01;
+			cly += 0.01;
+			clrot += 0.7;
+		}
+		else
+			poscl = 0;
+		break;
+	}
 
-	}
-	//animacion de caprazon 1
-	if (c1rot <= 360.0f) {
-		c1rot = c2rot += 4.0f;
-	}
-	else {
-		c1rot = c2rot = 0.0f;
-	}
-	switch (posc1) {
+	//Movimiento mascara Aku
+	switch (Akucm) {
 	case 0:
-		if (c1x >= -3.0) {
-			c1x -= 0.04;
-			c1y -= 0.002;
-		}
-		else
-			posc1 = 1;
+		Akux = 0.0;
+		Akuy = 0.0;
+		Akuz = 0.0;
+		Akucm = 1;
 		break;
+
 	case 1:
-		if (c1x <= -0.45) {
-			c1x += 0.04;
-			c1y -= 0.02;
+		if (Akux >= -10) {
+			Akux -= 0.05;
+			Akuy += 0.0009;
+			Akuz -= 0.05;
+			Akurot += 0.1;
 		}
 		else
-			posc1 = 2;
+			Akucm = 2;
 		break;
+	
 	case 2:
-		if (c1x >= -2.5) {
-			c1x -= 0.02;
-			c1y -= 0.012;
-
+		if (Akux <= 0) {
+			Akux += 0.05;
+			Akuy -= 0.0009;
+			Akuz -= 0.05;
+			Akurot -= 0.1;
 		}
 		else
-			posc1 = 3;
+			Akucm = 3;
 		break;
+
 	case 3:
-		c1z = -10.0f;
-		c1x = 0.0f;
-		c1y = 0.0f;
-		posc1 = 100;
+		if (Akux <= 10) {
+			Akux += 0.05;
+			Akuy += 0.0009;
+			Akuz += 0.05;
+			Akurot -= 0.1;
+		}
+		else
+			Akucm = 4;
 		break;
 
-	}
-	//animacion caparazon 2
-	switch (posc2) {
-	case 0:
-		if (c2x >= -3.0) {
-			c2x -= 0.04;
-			c2y -= 0.007;
-		}
-		else
-			posc2 = 1;
-		break;
-	case 1:
-		if (c2x <= -0.45) {
-			c2x += 0.04;
-			c2y -= 0.038;
-		}
-		else
-			posc2 = 2;
-		break;
-	case 2:
-		if (c2x >= -0.8) {
-			c2x -= 0.02;
-			c2y -= 0.02;
-
-		}
-		else
-			posc2 = 3;
-		break;
-	case 3:
-		if (c2x >= -2.5) {
-			c2x -= 0.015;
-			c2y += 0.015;
-		}
-		else
-			posc2 = 4;
-		break;
 	case 4:
-		c2z = -10.0f;
-		c2x = 0.0f;
-		c2y = 0.0f;
-		posc2 = 100;
+		if (Akux >= 0) {
+			Akux -= 0.05;
+			Akuy -= 0.0009;
+			Akuz += 0.05;
+			Akurot += 0.1;
+		}
+		else
+			Akucm = 0;
 		break;
+	}
 
-	}
-		
-	
-	//rotacion item box
-	if (ibrot <= 360.0f) {
-		ibrot += 1.0f;
-	}
-	else {
-		ibrot = 0.0;
-	}
-	switch (posib) {
-	case 0:
-		if (ibz <= 0.1f) {
-			ibz += 0.002f;
-		}
-		else
-			posib = 1;
-		break;
-	case 1:
-		if (ibz >= 0.0f) {
-			ibz -= 0.002f;
-		}
-		else
-			posib = 0;
-		break;
-	}
-	
 
 
 	guardarFrames = fopen("frames.txt", "w");
 	//Movimiento del objeto
 	if (play)
-	{	
+	{
 		if (i_curr_steps >= i_max_steps) //end of animation between frames?
 		{
 			playIndex++;
-			printf("Frame [%d] reproducido \n", playIndex-1);
+			printf("Frame [%d] reproducido \n", playIndex - 1);
 			if (playIndex > FrameIndex - 2)	//end of total animation?
 			{
-				printf("Ultimo frame es [%d] \n", FrameIndex-1);
+				printf("Ultimo frame es [%d] \n", FrameIndex - 1);
 				//fprintf(guardarFrames,"FrameIndex [%d]" ,FrameIndex);
 				printf("\nTermina animacion\n");
 				playIndex = 0;
@@ -717,7 +635,7 @@ void animate(void){
 			}
 			else //Next frame interpolations
 			{
-				//printf("entro aquÌ\n");
+				//printf("entro aqu√≠\n");
 				i_curr_steps = 0; //Reset counter
 				//Interpolation
 				interpolation();
@@ -725,7 +643,7 @@ void animate(void){
 		}
 		else
 		{
-			//printf("se quedÛ aqui\n");
+			//printf("se qued√≥ aqui\n");
 			//printf("max steps: %f", i_max_steps);
 			//Draw animation
 			movAvion_x += KeyFrame[playIndex].movAvion_xInc;
@@ -749,16 +667,15 @@ int main() {
 	mainWindow = Window(1024, 720); // 1280, 1024 or 1024, 768
 	mainWindow.Initialise();
 
-	
+
 
 	CreateObjects();
 	CreateShaders();
 
-	/*Se definen las dos c·maras a utilizar*/
-	//camera = Camera(glm::vec3(0.0f, 2.0f, 5.0f), glm::vec3(0.0f, 1.0f, 0.0f), -60.0f, 0.0f, 5.0f, 0.5f);
+	/*Se definen las dos c√°maras a utilizar*/
 	//Camara personaje
-	camera = Camera(glm::vec3(-40.0f, 10.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f), 180.0f, 0.0f, 5.0f, 0.5f); //(60.0f, 5.0f, 0.0f)
-	cameraIsometrica = Camera(glm::vec3(20.0f, 30.0f, 5.0f), glm::vec3(0.0f, 1.0f, 0.0f), -120.0f, -30.0f, 25.0f, 0.5f);
+	camera = Camera(glm::vec3(80.0f, 10.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f), 180.0f, 0.0f, 5.0f, 0.5f); //(60.0f, 5.0f, 0.0f)
+	cameraIsometrica = Camera(glm::vec3(-10.0f, 70.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f), -180.0f, -60.0f, 25.0f, 0.5f);
 
 	brickTexture = Texture("Textures/brick.png");
 	brickTexture.LoadTextureA();
@@ -780,55 +697,44 @@ int main() {
 
 	//Modelos Escenario
 	Museo = Model();
-	Museo.LoadModel ("Models/edificio.obj");
+	Museo.LoadModel("Models/edificio.obj");
 	//Mario
 	Mario = Model();
 	Mario.LoadModel("Models/Mario/Mario/MarioKart.obj");
 	Luigi = Model();
 	Luigi.LoadModel("Models/Mario/Luigi/luigi_kart.obj");
-	Caparazon1 = Model();
-	Caparazon1.LoadModel("Models/Mario/Green & Red Shells/shellV.obj");
-	Caparazon2 = Model();
-	Caparazon2.LoadModel("Models/Mario/Green & Red Shells/shellV.obj");
-	ItemBlock = Model();
-	ItemBlock.LoadModel("Models/Mario/Item_box/box.obj");
+
 	//Modelos Crash 
-	Crash = Model();
-	Crash.LoadModel("Models/Crash/CrashKart.obj");
-	Coco = Model();
-	Coco.LoadModel("Models/Crash/CocoKart.obj");
-	Cortex = Model();
-	Cortex.LoadModel("Models/Crash/CortexKart.obj");
-	Aku= Model();
-	Aku.LoadModel("Models/Crash/AkuAku.obj");
-	Box_power = Model();
-	Box_power.LoadModel("Models/Crash/caja_poder.obj");
-	Box_fruit = Model();
-	Box_fruit.LoadModel("Models/Crash/caja_fruta.obj");
-	Box_time = Model();
-	Box_time.LoadModel("Models/Crash/caja_tiempo.obj");
-	
+	Aku = Model();
+	Aku.LoadModel("Models/Aku_cara.obj");
+	CejaD = Model();
+	CejaD.LoadModel("Models/Aku_cejad.obj");
+	CejaI = Model();
+	CejaI.LoadModel("Models/Aku_cejai.obj");
+	P_ama = Model();
+	P_ama.LoadModel("Models/Aku_pama.obj");
+	P_azul = Model();
+	P_azul.LoadModel("Models/Aku_pazul.obj");
+	P_rojo = Model();
+	P_rojo.LoadModel("Models/Aku_projo.obj");
+	P_ver = Model();
+	P_ver.LoadModel("Models/Aku_pverde.obj");
+
+	Person = Model();
+	Person.LoadModel("Models/human.obj");
 
 
 
-//Luz direccional, sÛlo 1 y siempre debe de existir
+	//Luz direccional, s√≥lo 1 y siempre debe de existir
 	mainLight = DirectionalLight(5.0f, 5.0f, 5.0f, //Luz del dia
-								0.1f, 0.3f,
-								0.0f, 0.0f, -1.0f);
+		0.1f, 0.3f,
+		0.0f, 0.0f, -1.0f);
 
-//Contador de luces puntuales
+	//Contador de luces puntuales
 	unsigned int pointLightCount = 0;
-	//DeclaraciÛn de primer luz puntual
-	pointLights[0] = PointLight(1.0f, 1.0f, 1.0f,
-	//  aInt, dInt
-		5.0f, 2.0f,
-	// PosX  , PosY, PosZ
-		-42.0f, 6.0f, -31.0f,
-	//  con  , lin , exp
-		0.0f, 0.2f, 0.1f);
-	pointLightCount++;
+	//Declaraci√≥n de primer luz puntual
 
-//Contador de luces tipo reflector
+	//Contador de luces tipo reflector
 	unsigned int spotLightCount = 0;
 	//linterna luz central
 	spotLights[0] = SpotLight(1.0f, 1.0f, 1.0f,
@@ -855,18 +761,10 @@ int main() {
 		20.0f);
 	spotLightCount++;
 
-	spotLights[3] = SpotLight(0.96f, 0.91f, 0.0f,
-		1.0f, 2.0f,
-		-10.0f, 4.0f, 30.0f,
-		1.0f, 1.0f, 1.0f,
-		1.0f, 0.0f, 0.2f,
-		20.0f);
-	spotLightCount++;
 
 
-
-/*--------------------------------SKYBOX---------------------------------*/
-	//Skybox predeterminado (tarde)
+	/*--------------------------------SKYBOX---------------------------------*/
+		//Skybox predeterminado (tarde)
 	std::vector<std::string> skyboxFaces;
 	skyboxFaces.push_back("Textures/Skybox/cupertin-lake_rt.tga");
 	skyboxFaces.push_back("Textures/Skybox/cupertin-lake_lf.tga");
@@ -909,12 +807,12 @@ int main() {
 		uniformSpecularIntensity = 0, uniformShininess = 0;
 	GLuint uniformColor = 0;
 	glm::mat4 projection = glm::perspective(45.0f, (GLfloat)mainWindow.getBufferWidth() / mainWindow.getBufferHeight(), 0.1f, 300.0f);
-	
-	
+
+
 
 
 	movCoche = 0.0f;
-	movOffset  = 1.0f;
+	movOffset = 1.0f;
 	//movZero = 0.0f;
 	avanza = 1;
 	activaCamara = 1;
@@ -941,127 +839,132 @@ int main() {
 		rotaPuerta = mainWindow.getrotaP()*(-1);
 		activa_rotaPuerta = true;
 	}*/
-	
-	
+
+
 	//KEYFRAMES DECLARADOS INICIALES
-	
+
 	KeyFrame[0].movFan_x = 0.0f;
-	KeyFrame[0].movFan_y = 0.0f;
+	KeyFrame[0].movFan_y = 0.1f;
+	KeyFrame[0].movFan_z = -10.0f;
 	KeyFrame[0].giroFan = 0;
 
 
-	KeyFrame[1].movFan_x = -5.0f;
-	KeyFrame[1].movFan_y = 0.4f;
+	KeyFrame[1].movFan_x = 0.0f;
+	KeyFrame[1].movFan_y = 0.2f;
+	KeyFrame[1].movFan_z = -30.0f;
 	KeyFrame[1].giroFan = 0;
 
 
-	KeyFrame[2].movFan_x = -10.0f;
-	KeyFrame[2].movFan_y = 0.2f;
-	KeyFrame[2].giroFan = 0;
+	KeyFrame[2].movFan_x = 0.0f;
+	KeyFrame[2].movFan_y = 0.1f;
+	KeyFrame[2].movFan_z = -30.0f;
+	KeyFrame[2].giroFan = 180;
 
 
-	KeyFrame[3].movFan_x = -15.0f;
-	KeyFrame[3].movFan_y = 0.4f;
-	KeyFrame[3].giroFan = 0;
+	KeyFrame[3].movFan_x = 0.0f;
+	KeyFrame[3].movFan_y = 0.2f;
+	KeyFrame[3].movFan_z = -10.0f;
+	KeyFrame[3].giroFan = 180;
 
-	KeyFrame[4].movFan_x = -20.0f;
-	KeyFrame[4].movFan_y = 0.2f;
-	KeyFrame[4].giroFan = 0.0f;
-	
-	KeyFrame[5].movFan_x = -25.0f;
-	KeyFrame[5].movFan_y = 0.4f;
-	KeyFrame[5].giroFan = 0.0f;
+	KeyFrame[4].movFan_x = 0.0f;
+	KeyFrame[4].movFan_y = 0.1f;
+	KeyFrame[4].movFan_z = -10.0f;
+	KeyFrame[4].giroFan = 90;
 
-	KeyFrame[6].movFan_x = -30.0f;
+	KeyFrame[5].movFan_x = -3.0f;
+	KeyFrame[5].movFan_y = 0.2f;
+	KeyFrame[5].movFan_z = -10.0f;
+	KeyFrame[5].giroFan = 90;
+
+	KeyFrame[6].movFan_x = -3.0f;
 	KeyFrame[6].movFan_y = 0.2f;
-	KeyFrame[6].giroFan = 0.0f;
+	KeyFrame[6].movFan_z = -10.0f;
+	KeyFrame[6].giroFan = 135;
 
-	KeyFrame[7].movFan_x = -30.0f;
-	KeyFrame[7].movFan_y = 0.4f;
-	KeyFrame[7].giroFan = 90.0f;//Aqui da vuelta
-	
-	KeyFrame[8].movFan_x = -30.0f;
+	KeyFrame[7].movFan_x = -10.0f;
+	KeyFrame[7].movFan_y = 0.1f;
+	KeyFrame[7].movFan_z = 0.0f;
+	KeyFrame[7].giroFan = 135;//Aqui da vuelta
+
+	KeyFrame[8].movFan_x = -10.0f;
 	KeyFrame[8].movFan_y = 0.2f;
-	KeyFrame[8].movFan_z = -10.0f;
-	KeyFrame[8].giroFan = 90.0f;
-	
-	KeyFrame[9].movFan_x = -30.0f;
-	KeyFrame[9].movFan_y = 0.4f;
-	KeyFrame[9].movFan_z = -20.0f;
+	KeyFrame[8].movFan_z = 0.0f;
+	KeyFrame[8].giroFan = 90;
+
+	KeyFrame[9].movFan_x = -25.0f;
+	KeyFrame[9].movFan_y = 0.1f;
+	KeyFrame[9].movFan_z = 0.0f;
 	KeyFrame[9].giroFan = 90.0f;
 
-	KeyFrame[10].movFan_x = -30.0f;
+	KeyFrame[10].movFan_x = -25.0f;
 	KeyFrame[10].movFan_y = 0.2f;
-	KeyFrame[10].movFan_z = -30.0f;
-	KeyFrame[10].giroFan = 90.0f;
+	KeyFrame[10].movFan_z = 0.0f;
+	KeyFrame[10].giroFan = 270.0f;
 
-	KeyFrame[11].movFan_x = -30.0f;
-	KeyFrame[11].movFan_y = 0.4f;
-	KeyFrame[11].movFan_z = -30.0f;
-	KeyFrame[11].giroFan = 180.0f;//Vuelve a girar
+	KeyFrame[11].movFan_x = -10.0f;
+	KeyFrame[11].movFan_y = 0.1f;
+	KeyFrame[11].movFan_z = 0.0f;
+	KeyFrame[11].giroFan = 270.0f;//Vuelve a girar
 
-	KeyFrame[12].movFan_x = -30.0f;
+	KeyFrame[12].movFan_x = -10.0f;
 	KeyFrame[12].movFan_y = 0.2f;
-	KeyFrame[12].movFan_z = -30.0f;
+	KeyFrame[12].movFan_z = 0.0f;
 	KeyFrame[12].giroFan = 180.0f;
 
-
-	KeyFrame[13].movFan_x = -25.0f;
-	KeyFrame[13].movFan_y = 0.4f;
-	KeyFrame[13].movFan_z = -30.0f;
+	KeyFrame[13].movFan_x = -10.0f;
+	KeyFrame[13].movFan_y = 0.1f;
+	KeyFrame[13].movFan_z = 10.0f;
 	KeyFrame[13].giroFan = 180.0f;
 
-
-	KeyFrame[14].movFan_x = -20.0f;
+	KeyFrame[14].movFan_x = -10.0f;
 	KeyFrame[14].movFan_y = 0.2f;
-	KeyFrame[14].movFan_z = -30.0f;
-	KeyFrame[14].giroFan = 180.0f;
+	KeyFrame[14].movFan_z = 10.0f;
+	KeyFrame[14].giroFan = 270.0f;
 
+	KeyFrame[15].movFan_x = 0.0f;
+	KeyFrame[15].movFan_y = 0.1f;
+	KeyFrame[15].movFan_z = 10.0f;
+	KeyFrame[15].giroFan = 270.0f;
 
-	KeyFrame[15].movFan_x = -15.0f;
-	KeyFrame[15].movFan_y = 0.4f;
-	KeyFrame[15].movFan_z = -30.0f;
-	KeyFrame[15].giroFan = 180.0f;
-
-	KeyFrame[16].movFan_x = -10.0f;
+	KeyFrame[16].movFan_x = 0.0f;
 	KeyFrame[16].movFan_y = 0.2f;
-	KeyFrame[16].movFan_z = -30.0f;
+	KeyFrame[16].movFan_z = 10.0f;
 	KeyFrame[16].giroFan = 180.0f;
 
-	KeyFrame[17].movFan_x = -5.0f;
-	KeyFrame[17].movFan_y = 0.4f;
-	KeyFrame[17].movFan_z = -30.0f;
+	KeyFrame[17].movFan_x = 0.0f;
+	KeyFrame[17].movFan_y = 0.1f;
+	KeyFrame[17].movFan_z = 25.0f;
 	KeyFrame[17].giroFan = 180.0f;
 
 	KeyFrame[18].movFan_x = 0.0f;
 	KeyFrame[18].movFan_y = 0.2f;
-	KeyFrame[18].movFan_z = -30.0f;
-	KeyFrame[18].giroFan = 180.0f;
+	KeyFrame[18].movFan_z = 25.0f;
+	KeyFrame[18].giroFan = 0.0f;
 
 	KeyFrame[19].movFan_x = 0.0f;
-	KeyFrame[19].movFan_y = 0.4f;
-	KeyFrame[19].movFan_z = -20.0f;
-	KeyFrame[19].giroFan = 270.0f;//Vuelve a girar
+	KeyFrame[19].movFan_y = 0.1f;
+	KeyFrame[19].movFan_z = 10.0f;
+	KeyFrame[19].giroFan = 0.0f;//Vuelve a girar
 
 	KeyFrame[20].movFan_x = 0.0f;
 	KeyFrame[20].movFan_y = 0.2f;
-	KeyFrame[20].movFan_z = -10.0f;
-	KeyFrame[20].giroFan = 270.0f;
+	KeyFrame[20].movFan_z = 10.0f;
+	KeyFrame[20].giroFan = -90.0f;
 
-	KeyFrame[21].movFan_x = 0.0f;
-	KeyFrame[21].movFan_y = 0.4f;
-	KeyFrame[21].movFan_z = 0.0f;
-	KeyFrame[21].giroFan = 270.0f;
+	KeyFrame[21].movFan_x = 15.0f;
+	KeyFrame[21].movFan_y = 0.1f;
+	KeyFrame[21].movFan_z = 10.0f;
+	KeyFrame[21].giroFan = -90.0f;
 
-	KeyFrame[22].movFan_x = 0.0f;
+	KeyFrame[22].movFan_x = 15.0f;
 	KeyFrame[22].movFan_y = 0.2f;
-	KeyFrame[22].movFan_z = 0.0f;
-	KeyFrame[22].giroFan = 360.0f;//Ultima vuelta
+	KeyFrame[22].movFan_z = 10.0f;
+	KeyFrame[22].giroFan = -45.0f;//Ultima vuelta
 
-	KeyFrame[23].movFan_x = -10.0f;
-	KeyFrame[23].movFan_y = 0.0f;
+	KeyFrame[23].movFan_x = 15.0f;
+	KeyFrame[23].movFan_y = 0.1f;
 	KeyFrame[23].movFan_z = 0.0f;
-	KeyFrame[23].giroFan = 360.0f;
+	KeyFrame[23].giroFan = -45.0f;
 
 
 	Sphere sp = Sphere(0.5, 10, 10);
@@ -1073,16 +976,16 @@ int main() {
 	//musica3D();
 
 /*************Loop mientras no se cierra la ventana**************/
-	while (!mainWindow.getShouldClose()){
+	while (!mainWindow.getShouldClose()) {
 
 		if (mainWindow.getactivaLuces() == 1)
 		{
-			spotLights[1].SetFlash((glm::vec3(-20.0f, 8.0f, -28.0f)), glm::vec3(0.0f, -1.5f, 0.0f));
-			spotLights[2].SetFlash((glm::vec3(13.0f, 8.0f, -28.0f)), glm::vec3(0.0f, -1.5f, 0.0f));
+			spotLights[1].SetFlash((glm::vec3(30.0f, 6.5f, 13.5f)), glm::vec3(0.0f, 3.0f, 0.0f));
+			spotLights[2].SetFlash((glm::vec3(30.0f, 6.5f, -13.5f)), glm::vec3(0.0f, 3.0f, 0.0f));
 		}
 		else {
-			spotLights[1].SetFlash((glm::vec3(-20.0f, 8.0f, -28.0f)), glm::vec3(0.0f, 0.0f, 0.0f));
-			spotLights[2].SetFlash((glm::vec3(13.0f, 8.0f, -28.0f)), glm::vec3(0.0f, 0.0f, 0.0f));
+			spotLights[1].SetFlash((glm::vec3(30.0f, 6.5f, 13.5f)), glm::vec3(0.0f, 0.0f, 0.0f));
+			spotLights[2].SetFlash((glm::vec3(30.0f, 6.5f, -13.5f)), glm::vec3(0.0f, 0.0f, 0.0f));
 		}
 
 		GLfloat now = glfwGetTime();
@@ -1090,10 +993,10 @@ int main() {
 		//deltaTime += (now - lastTime) / limitFPS;
 		lastTime = now;
 
-		
+
 		//inputJoystick();
 
-/*---------------------------------------------------------------------------------------------------------*/	
+/*---------------------------------------------------------------------------------------------------------*/
 		////Si se pulsa la tecla Q, se activa pantalla completa, en caso contrario se pulse M, camara normal
 		//if (mainWindow.getactivaPantallaCompleta() == 1) {
 		//	//activaPantallaCompleta = 1;
@@ -1118,9 +1021,9 @@ int main() {
 		//skyboxNoche.DrawSkybox(camera.calculateViewMatrix(), projection);
 		//skybox.DrawSkybox(camera.calculateViewMatrix(), projection);
 
-/**********************************FALTA ARREGLAR EL CICLO DÕA NOCHE*************************************
+/**********************************FALTA ARREGLAR EL CICLO D√çA NOCHE*************************************
 		if (activarDia = true) {
-			if (contadorDiaNoche > -10.0f) {//PosiciÛn inicial
+			if (contadorDiaNoche > -10.0f) {//Posici√≥n inicial
 				contadorDiaNoche -= contadorDiaNocheOff;//Llega al 10
 				skyboxDia.DrawSkybox(camera.calculateViewMatrix(), projection);
 				activarDia = true;
@@ -1130,7 +1033,7 @@ int main() {
 			}
 		}
 		else {
-			if (contadorDiaNoche < 10.0f) {//PosiciÛn final
+			if (contadorDiaNoche < 10.0f) {//Posici√≥n final
 				contadorDiaNoche += contadorDiaNocheOff * deltaTime * 2;//Desde el +10 hasta el -10
 				skybox.DrawSkybox(camera.calculateViewMatrix(), projection);
 			}
@@ -1139,23 +1042,23 @@ int main() {
 			}
 		}
 ********************************************************************************************************/
-		
+
 		shaderList[0].UseShader();
 		uniformModel = shaderList[0].GetModelLocation();
 		uniformProjection = shaderList[0].GetProjectionLocation();
 		uniformView = shaderList[0].GetViewLocation();
 		uniformEyePosition = shaderList[0].GetEyePositionLocation();
 		uniformColor = shaderList[0].getColorLocation();
-		//informaciÛn en el shader de intensidad especular y brillo
+		//informaci√≥n en el shader de intensidad especular y brillo
 		uniformSpecularIntensity = shaderList[0].GetSpecularIntensityLocation();
 		uniformShininess = shaderList[0].GetShininessLocation();
 
-		//// luz ligada a la c·mara de tipo flash
+		//// luz ligada a la c√°mara de tipo flash
 		//glm::vec3 lowerLight = camera.getCameraPosition();
 		//lowerLight.y -= 0.3f;
 		//spotLights[0].SetFlash(lowerLight, camera.getCameraDirection());
 
-		//informaciÛn al shader de fuentes de iluminaciÛn
+		//informaci√≥n al shader de fuentes de iluminaci√≥n
 		shaderList[0].SetDirectionalLight(&mainLight);
 		shaderList[0].SetPointLights(pointLights, pointLightCount);
 		shaderList[0].SetSpotLights(spotLights, spotLightCount);
@@ -1163,22 +1066,21 @@ int main() {
 
 		//Museo
 		glm::mat4 museo(1.0);
-		
+
 		//Mario
 		glm::mat4 mario(1.0);
 		glm::mat4 luigi(1.0f);
-		glm::mat4 caparazon1(1.0);
-		glm::mat4 caparazon2(1.0);
-		glm::mat4 itemblock(1.0);
 		//Crash
 		glm::mat4 model(1.0);
-		glm::mat4 crash(1.0);
-		glm::mat4 coco(1.0);
-		glm::mat4 cortex(1.0);
 		glm::mat4 aku(1.0);
-		glm::mat4 poder(1.0);
-		glm::mat4 fruta(1.0);
-		glm::mat4 tiempo(1.0);
+		glm::mat4 cejai(1.0);
+		glm::mat4 cejad(1.0);
+		glm::mat4 p_a(1.0);
+		glm::mat4 p_v(1.0);
+		glm::mat4 p_az(1.0);
+		glm::mat4 p_r(1.0);
+		glm::mat4 persona(1.0);
+		glm::vec3 pos_per(1.0);
 
 		glm::vec3 color = glm::vec3(1.0f, 1.0f, 1.0f);
 
@@ -1192,19 +1094,19 @@ int main() {
 		Material_brillante.UseMaterial(uniformSpecularIntensity, uniformShininess);
 		meshList[2]->RenderMesh();
 
-		/***********************AQUÕ SE REALIZA EL CAMBIO DE C¡MARA*******************************/
-		if (mainWindow.getactivaCamara()) { //Al pulsar N, activa c·mara isomÈtrica
+		/***********************AQU√ç SE REALIZA EL CAMBIO DE C√ÅMARA*******************************/
+		if (mainWindow.getactivaCamara()) { //Al pulsar N, activa c√°mara isom√©trica
 			cameraIsometrica.keyControl(mainWindow.getsKeys(), deltaTime * 5.0f);
 			glUniformMatrix4fv(uniformView, 1, GL_FALSE, glm::value_ptr(cameraIsometrica.calculateViewMatrix()));
 			glUniform3f(uniformEyePosition, cameraIsometrica.getCameraPosition().x, cameraIsometrica.getCameraPosition().y, cameraIsometrica.getCameraPosition().z);
 		}
-		else {//Al pulsar M, activa c·mara normal
+		else {//Al pulsar M, activa c√°mara normal
 			//activaCamara = 0;
 			camera.keyControl(mainWindow.getsKeys(), deltaTime * 5);
 			camera.mouseControl(mainWindow.getXChange(), mainWindow.getYChange());
 			glUniformMatrix4fv(uniformView, 1, GL_FALSE, glm::value_ptr(camera.calculateViewMatrix()));
 			glUniform3f(uniformEyePosition, camera.getCameraPosition().x, camera.getCameraPosition().y, camera.getCameraPosition().z);
-			
+
 		}
 		/**********************************************************************************************/
 
@@ -1218,110 +1120,87 @@ int main() {
 
 		//Mario en carro
 		mario = glm::mat4(1.0);
-		mario = glm::translate(mario, glm::vec3(-42.9f+cmy, 2.7f, 2.6f+cmx));
+		mario = glm::translate(mario, glm::vec3(-42.9f + cmy, 2.7f, 2.6f + cmx));
 		mario = glm::scale(mario, glm::vec3(0.03f));
-		mario = glm::rotate(mario, (180+ cmrot) * toRadians, glm::vec3(0.0f, -1.0f, 0.0f));
+		mario = glm::rotate(mario, (180 + cmrot) * toRadians, glm::vec3(0.0f, -1.0f, 0.0f));
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(mario));
 		Mario.RenderModel();
 
 		//Luigi en carro
 		luigi = glm::mat4(1.0);
-		luigi = glm::translate(luigi, glm::vec3(-43.4f+cly, 2.7f, 2.6f+clx));
+		luigi = glm::translate(luigi, glm::vec3(-43.4f + cly, 2.7f, 2.6f + clx));
 		luigi = glm::scale(luigi, glm::vec3(0.025f));
-		luigi = glm::rotate(luigi, (180+clrot) * toRadians, glm::vec3(0.0f, -1.0f, 0.0f));
+		luigi = glm::rotate(luigi, (180 + clrot) * toRadians, glm::vec3(0.0f, -1.0f, 0.0f));
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(luigi));
 		Luigi.RenderModel();
-		
-		//Caparazon 1
-		caparazon1 = glm::mat4(1.0);
-		caparazon1 = glm::translate(caparazon1, glm::vec3(-40.5f+c1y, 2.6f+c1z, -2.5f+c1x));
-		caparazon1 = glm::scale(caparazon1, glm::vec3(0.15f));
-		caparazon1 = glm::rotate(caparazon1, (180+c1rot) * toRadians, glm::vec3(0.0f, -1.0f, 0.0f));
-		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(caparazon1));
-		Caparazon1.RenderModel();
 
-		//Caparazon 2
-		caparazon2 = glm::mat4(1.0);
-		caparazon2 = glm::translate(caparazon2, glm::vec3(-41.0f+c2y, 2.6f+c2z, -2.5f+c2x));
-		caparazon2 = glm::scale(caparazon2, glm::vec3(0.15f));
-		caparazon2 = glm::rotate(caparazon2, (180+c2rot) * toRadians, glm::vec3(0.0f, -1.0f, 0.0f));
-		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(caparazon2));
-		Caparazon2.RenderModel();
-		
-		//Bloques de objetos
-		//1
-		itemblock = glm::mat4(1.0);
-		itemblock = glm::translate(itemblock, glm::vec3(-40.5f, 3.0f + ibz, -2.5f));
-		itemblock = glm::scale(itemblock, glm::vec3(0.15f));
-		itemblock = glm::rotate(itemblock, (180 + ibrot) * toRadians, glm::vec3(0.0f, -1.0f, 0.0f));
-		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(itemblock));
-		ItemBlock.RenderModel();
-		//2
-		itemblock = glm::mat4(1.0);
-		itemblock = glm::translate(itemblock, glm::vec3(-41.0f, 3.0f + ibz, -2.5f ));
-		itemblock = glm::scale(itemblock, glm::vec3(0.15f));
-		itemblock = glm::rotate(itemblock, (180 + ibrot) * toRadians, glm::vec3(0.0f, -1.0f, 0.0f));
-		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(itemblock));
-		ItemBlock.RenderModel();
 
 		//Sala de Crash
 		//----------------------------------------------------------------
-		//Crash con auto
-		crash = glm::mat4(1.0);
-		crash = glm::translate(crash, glm::vec3(-41.0f, 0.0f, -33.0f));
-		crash = glm::scale(crash, glm::vec3(0.1f, 0.1f, 0.1f));
-		crash = glm::rotate(crash, giroFan * toRadians, glm::vec3(0.0f, -1.0f, 0.0f));
-		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(crash));
-		Crash.RenderModel();
-
-		//Coco con auto
-		coco = glm::mat4(1.0);
-		coco = glm::translate(coco, glm::vec3(-41.0f, 0.0f, -38.0f));
-		coco = glm::scale(coco, glm::vec3(0.1f, 0.1f, 0.1f));
-		coco = glm::rotate(coco, giroFan * toRadians, glm::vec3(0.0f, -1.0f, 0.0f));
-		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(coco));
-		Coco.RenderModel();
-
-		//Cortex con auto
-		cortex = glm::mat4(1.0);
-		cortex = glm::translate(cortex, glm::vec3(-41.0f, 0.0f, -28.0f));
-		cortex = glm::scale(cortex, glm::vec3(0.1f, 0.1f, 0.1f));
-		cortex = glm::rotate(cortex, giroFan * toRadians, glm::vec3(0.0f, -1.0f, 0.0f));
-		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(cortex));
-		Cortex.RenderModel();
-
-		//Aku Aku
+		//Cara Aku
 		aku = glm::mat4(1.0);
-		aku = glm::translate(aku, glm::vec3(0.0f, 0.0f, 0.0f));
-		aku = glm::scale(aku, glm::vec3(1.0f, 1.0f, 1.0f));
-		aku = glm::rotate(aku, giroFan * toRadians, glm::vec3(0.0f, -1.0f, 0.0f));
+		aku = glm::translate(aku, glm::vec3(0.0f + Akux, 0.0f , -30.0f + Akuz));
+		aku = glm::scale(aku, glm::vec3(0.2f, 0.2f, 0.2f));
+		aku = glm::rotate(aku, 0 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(aku));
 		Aku.RenderModel();
 
-		//Caja de poder
-		poder = glm::mat4(1.0);
-		poder = glm::translate(poder, glm::vec3(-41.0f, 7.0f, -38.0f));
-		poder= glm::scale(poder, glm::vec3(2.0f, 2.0f, 2.0f));
-		poder = glm::rotate(poder, giroFan * toRadians, glm::vec3(0.0f, -1.0f, 0.0f));
-		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(poder));
-		Box_power.RenderModel();
+		//Ceja Izq Aku
+		cejad = glm::mat4(1.0);
+		cejad = glm::translate(cejad, glm::vec3(0.0f + Akux, 0.0f + Akuy, -30.0f + Akuz));
+		cejad = glm::scale(cejad, glm::vec3(0.2f, 0.2f, 0.2f));
+		cejad = glm::rotate(cejad, 0 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(cejad));
+		CejaD.RenderModel();
 
-		//Caja de fruta
-		fruta = glm::mat4(1.0);
-		fruta = glm::translate(fruta, glm::vec3(-41.0f, 7.0f, -28.0f));
-		fruta = glm::scale(fruta, glm::vec3(2.0f, 2.0f, 2.0f));
-		fruta = glm::rotate(fruta, giroFan * toRadians, glm::vec3(0.0f, -1.0f, 0.0f));
-		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(fruta));
-		Box_fruit.RenderModel();
+		//Ceja Der Aku
+		cejai = glm::mat4(1.0);
+		cejai = glm::translate(cejai, glm::vec3(0.0f + Akux, 0.0f + Akuy, -30.0f + Akuz));
+		cejai = glm::scale(cejai, glm::vec3(0.2f, 0.2f, 0.2f));
+		cejai = glm::rotate(cejai, 0 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(cejai));
+		CejaI.RenderModel();
 
-		//Cajas de tiempo
-		tiempo = glm::mat4(1.0);
-		tiempo = glm::translate(tiempo, glm::vec3(-41.0f, 12.0f, -33.0f));
-		tiempo = glm::scale(tiempo, glm::vec3(2.0f, 2.0f, 2.0f));
-		tiempo = glm::rotate(tiempo, giroFan * toRadians, glm::vec3(0.0f, -1.0f, 0.0f));
-		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(tiempo));
-		Box_time.RenderModel();
+		//Plumas Aku
+		p_a = glm::mat4(1.0);
+		p_a = glm::translate(p_a, glm::vec3(0.0f + Akux, 0.0f, -30.0f + Akuz));
+		p_a = glm::scale(p_a, glm::vec3(0.2f, 0.2f, 0.2f));
+		p_a = glm::rotate(p_a, (0 + Akurot) * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(p_a));
+		P_ama.RenderModel();
 
+		//Plumas Aku
+		p_az = glm::mat4(1.0);
+		p_az = glm::translate(p_az, glm::vec3(0.0f + Akux, 0.0f, -30.0f + Akuz));
+		p_az = glm::scale(p_az, glm::vec3(0.2f, 0.2f, 0.2f));
+		p_az = glm::rotate(p_az, (0 + Akurot) * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(p_az));
+		P_azul.RenderModel();
+
+		//Plumas Aku
+		p_r = glm::mat4(1.0);
+		p_r = glm::translate(p_r, glm::vec3(0.0f + Akux, 0.0f, -30.0f + Akuz));
+		p_r = glm::scale(p_r, glm::vec3(0.2f, 0.2f, 0.2f));
+		p_r = glm::rotate(p_r, (0 + Akurot) * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(p_r));
+		P_rojo.RenderModel();
+
+		//Plumas Aku
+		p_v = glm::mat4(1.0);
+		p_v = glm::translate(p_v, glm::vec3(0.0f + Akux, 0.0f, -30.0f + Akuz));
+		p_v = glm::scale(p_v, glm::vec3(0.2f, 0.2f, 0.2f));
+		p_v = glm::rotate(p_v, (giroFan + Akurot) * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(p_v));
+		P_ver.RenderModel();
+
+		//Persona
+		persona = glm::mat4(1.0);
+		pos_per = glm::vec3(movFan_x,movFan_y,movFan_z);
+		persona = glm::translate(persona, pos_per);
+		persona = glm::scale(persona, glm::vec3(3.0f, 3.0f, 3.0f));
+		persona = glm::rotate(persona, giroFan * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(persona));
+		Person.RenderModel();
 
 
 
@@ -1333,12 +1212,12 @@ int main() {
 	return 0;
 }
 
-void inputKeyframes(bool* keys){
+void inputKeyframes(bool* keys) {
 	if (keys[GLFW_KEY_SPACE])
 	{
-		
-		if(reproduciranimacion<1)
-		{	
+
+		if (reproduciranimacion < 1)
+		{
 			if (play == false && (FrameIndex > 1))
 			{
 				//resetElements();
@@ -1366,9 +1245,9 @@ void inputKeyframes(bool* keys){
 			reproduciranimacion = 0;
 		}
 	}
-	
-	if (keys[GLFW_KEY_L]){
-		if (guardoFrame < 1){
+
+	if (keys[GLFW_KEY_L]) {
+		if (guardoFrame < 1) {
 			saveFrame();
 			printf("movAvion_x es: %f\n", movAvion_x);
 			//printf("movAvion_y es: %f\n", movAvion_y);
@@ -1377,23 +1256,23 @@ void inputKeyframes(bool* keys){
 			reinicioFrame = 0;
 		}
 	}
-	if (keys[GLFW_KEY_P]){
-		if (reinicioFrame < 1){
-			guardoFrame=0;
+	if (keys[GLFW_KEY_P]) {
+		if (reinicioFrame < 1) {
+			guardoFrame = 0;
 		}
 	}
-	
-	//ImplementaciÛn de teclado para la variable de traslaciÛn en X positivo
-	if (keys[GLFW_KEY_1]){
-		if (ciclo < 1){
+
+	//Implementaci√≥n de teclado para la variable de traslaci√≥n en X positivo
+	if (keys[GLFW_KEY_1]) {
+		if (ciclo < 1) {
 			movAvion_x += 1.0f;
 			ciclo++;
 			ciclo2 = 0;
 			printf("reinicia con 2\n");
 		}
-		
+
 	}
-	//ImplementaciÛn de teclado para la variable de traslaciÛn en X negativo
+	//Implementaci√≥n de teclado para la variable de traslaci√≥n en X negativo
 	if (keys[GLFW_KEY_3]) {
 		if (ciclo < 1) {
 			//printf("movAvion_x(-) es: %f\n", movAvion_x);
@@ -1405,7 +1284,7 @@ void inputKeyframes(bool* keys){
 		}
 	}
 
-	//ImplementaciÛn de teclado para la variable de traslaciÛn en Y positivo
+	//Implementaci√≥n de teclado para la variable de traslaci√≥n en Y positivo
 	if (keys[GLFW_KEY_4]) {
 		if (ciclo < 1) {
 			//printf("movAvion_y(+) es: %f\n", movAvion_y);
@@ -1417,7 +1296,7 @@ void inputKeyframes(bool* keys){
 		}
 
 	}
-	//ImplementaciÛn de teclado para la variable de traslaciÛn en Y negativo
+	//Implementaci√≥n de teclado para la variable de traslaci√≥n en Y negativo
 	if (keys[GLFW_KEY_5]) {
 		if (ciclo < 1) {
 			//printf("movAvion_y(-) es: %f\n", movAvion_y);
@@ -1429,7 +1308,7 @@ void inputKeyframes(bool* keys){
 		}
 	}
 
-	//ImplementaciÛn de teclado para la variable GIRO DEL AVI”N
+	//Implementaci√≥n de teclado para la variable GIRO DEL AVI√ìN
 	if (keys[GLFW_KEY_6]) {
 		if (ciclo < 1) {
 			//printf("movAvion_y(-) es: %f\n", movAvion_y);
@@ -1441,7 +1320,7 @@ void inputKeyframes(bool* keys){
 		}
 	}
 
-	//ImplementaciÛn de teclado para la variable GIRO DEL AVI”N
+	//Implementaci√≥n de teclado para la variable GIRO DEL AVI√ìN
 	if (keys[GLFW_KEY_7]) {
 		if (ciclo < 1) {
 			//printf("movAvion_y(-) es: %f\n", movAvion_y);
@@ -1453,10 +1332,10 @@ void inputKeyframes(bool* keys){
 		}
 	}
 
-	if (keys[GLFW_KEY_2]){
-		if(ciclo2<1)
+	if (keys[GLFW_KEY_2]) {
+		if (ciclo2 < 1)
 		{
-		ciclo = 0;
+			ciclo = 0;
 		}
 	}
 
@@ -1545,12 +1424,12 @@ void inputJoystick() {
 
 
 void musica2D() {
-	//Inicia el mÛdulo con los par·metros por defecto
+	//Inicia el m√≥dulo con los par√°metros por defecto
 	ISoundEngine* engine = createIrrKlangDevice();
 	ISoundEngine* engine2 = createIrrKlangDevice();
-	
-	if (!engine){
-		printf("No se pudo iniciar\n"); 
+
+	if (!engine) {
+		printf("No se pudo iniciar\n");
 	}
 
 	engine->play2D("media/fondo.mp3", false);//Se reproduce audio de fondo
@@ -1559,4 +1438,5 @@ void musica2D() {
 	//engine->drop(); 
 
 }
+
 
